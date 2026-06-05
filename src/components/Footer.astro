@@ -1,31 +1,36 @@
 ---
 import logo from '../image/logo.png';
+import { getLangFromUrl } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 <footer class="bg-card border-t border-white/5 pt-16 pb-8 mt-20 relative overflow-hidden">
   <div class="max-w-7xl mx-auto px-6 relative z-10">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
       <div class="col-span-1">
-        <a href="/" class="flex items-center gap-3 mb-6 group">
+        <a href={lang === 'ru' ? `${base}/` : `${base}/${lang}/`} class="flex items-center gap-3 mb-6 group">
           <div class="w-10 h-10 flex items-center justify-center overflow-hidden rounded-xl bg-white/5 border border-white/10 group-hover:border-accent/50 transition-all p-1">
             <img src={logo.src} alt="Wayfis Logo" class="w-full h-full object-contain" />
           </div>
           <span class="text-xl font-bold tracking-tight text-white font-mono">Wayfis.init()</span>
         </a>
         <p class="text-textMuted text-sm leading-relaxed font-mono">
-          // Разработка современных цифровых решений с фокусом на эстетику и функциональность.
+          {lang === 'ru' 
+            ? '// Разработка современных цифровых решений с фокусом на эстетику и функциональность.' 
+            : '// Developing modern digital solutions with a focus on aesthetics and functionality.'}
         </p>
       </div>
       
       <div>
-        <h4 class="text-white font-bold mb-6 font-mono text-xs uppercase tracking-widest text-accent">01. Навигатор</h4>
+        <h4 class="text-white font-bold mb-6 font-mono text-xs uppercase tracking-widest text-accent">01. {lang === 'ru' ? 'Навигатор' : 'Navigator'}</h4>
         <ul class="space-y-4 text-sm text-textMuted font-mono">
-          <li><a href="/" class="hover:text-accent transition-colors">root/home</a></li>
-          <li><a href="/catalog" class="hover:text-accent transition-colors">root/services</a></li>
-          <li><a href="/portfolio" class="hover:text-accent transition-colors">root/cases</a></li>
-          <li><a href="/reviews" class="hover:text-accent transition-colors">root/feedback</a></li>
+          <li><a href={lang === 'ru' ? `${base}/` : `${base}/${lang}/`} class="hover:text-accent transition-colors">root/home</a></li>
+          <li><a href={lang === 'ru' ? `${base}/catalog` : `${base}/${lang}/catalog`} class="hover:text-accent transition-colors">root/services</a></li>
+          <li><a href={lang === 'ru' ? `${base}/portfolio` : `${base}/${lang}/portfolio`} class="hover:text-accent transition-colors">root/cases</a></li>
+          <li><a href={lang === 'ru' ? `${base}/reviews` : `${base}/${lang}/reviews`} class="hover:text-accent transition-colors">root/feedback</a></li>
         </ul>
       </div>
-
       <div>
         <h4 class="text-white font-bold mb-6 font-mono text-xs uppercase tracking-widest text-accent">02. Соцсети</h4>
         <ul class="space-y-4 text-sm text-textMuted font-mono">
