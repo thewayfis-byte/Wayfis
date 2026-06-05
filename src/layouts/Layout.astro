@@ -1,0 +1,114 @@
+---
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Портфолио разработчика сайтов и ботов" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+	<body class="bg-dark text-white font-sans selection:bg-accent selection:text-white min-h-screen relative">
+		<!-- Particles Canvas -->
+		<canvas id="particles" class="fixed inset-0 -z-5 pointer-events-none opacity-40"></canvas>
+
+		<!-- Global Background Glows -->
+		<div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+			<div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-accent/5 blur-[120px] rounded-full"></div>
+			<div class="absolute bottom-[10%] right-[-5%] w-[30%] h-[30%] bg-accent/10 blur-[100px] rounded-full"></div>
+		</div>
+		<slot />
+
+		<script is:inline>
+			const canvas = document.getElementById('particles');
+			const ctx = canvas.getContext('2d');
+			let particles = [];
+			const mouse = { x: 0, y: 0 };
+
+			function init() {
+				canvas.width = window.innerWidth;
+				canvas.height = window.innerHeight;
+			}
+
+			window.addEventListener('resize', init);
+			window.addEventListener('mousemove', (e) => {
+				mouse.x = e.x;
+				mouse.y = e.y;
+			});
+
+			class Particle {
+				constructor() {
+					this.x = Math.random() * canvas.width;
+					this.y = Math.random() * canvas.height;
+					this.size = Math.random() * 2 + 0.1;
+					this.speedX = Math.random() * 1 - 0.5;
+					this.speedY = Math.random() * 1 - 0.5;
+					this.color = 'rgba(59, 130, 246, 0.3)';
+				}
+				update() {
+					this.x += this.speedX;
+					this.y += this.speedY;
+					
+					const dx = mouse.x - this.x;
+					const dy = mouse.y - this.y;
+					const distance = Math.sqrt(dx*dx + dy*dy);
+					if (distance < 150) {
+						this.x += dx * 0.01;
+						this.y += dy * 0.01;
+					}
+
+					if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
+					if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
+				}
+				draw() {
+					if (!ctx) return;
+					ctx.fillStyle = this.color;
+					ctx.beginPath();
+					ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+					ctx.fill();
+				}
+			}
+
+			function createParticles() {
+				particles = [];
+				for (let i = 0; i < 100; i++) {
+					particles.push(new Particle());
+				}
+			}
+
+			function animate() {
+				if (!ctx) return;
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				for (let i = 0; i < particles.length; i++) {
+					particles[i].update();
+					particles[i].draw();
+				}
+				requestAnimationFrame(animate);
+			}
+
+			init();
+			createParticles();
+			animate();
+
+			console.log("%c Wayfis %c Developed with ❤️ ", "background: #3b82f6; color: #fff; padding: 5px; border-radius: 5px 0 0 5px;", "background: #1f2937; color: #fff; padding: 5px; border-radius: 0 5px 5px 0;");
+		</script>
+	</body></html><style is:global>
+	:root {
+		--accent: 59, 130, 246;
+	}
+	html {
+		scroll-behavior: smooth;
+	}
+	body {
+		margin: 0;
+		padding: 0;
+	}
+</style>
