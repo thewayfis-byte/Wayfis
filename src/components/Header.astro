@@ -60,11 +60,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <a href={lang === 'ru' ? `${base}/reviews` : `${base}/${lang}/reviews`} class="text-2xl font-bold hover:text-accent transition-colors">
       {t('nav.reviews')}
     </a>
-    <a href="#contact" class="px-8 py-3 rounded-xl bg-accent text-white font-bold">
+    
+    <div class="flex bg-white/5 rounded-full p-1 border border-white/10 mt-4">
+      <a href={`${base}/`} class={`px-6 py-2 rounded-full text-sm font-bold transition-all ${lang === 'ru' ? 'bg-accent text-white' : 'text-textMuted'}`}>RU</a>
+      <a href={`${base}/en/`} class={`px-6 py-2 rounded-full text-sm font-bold transition-all ${lang === 'en' ? 'bg-accent text-white' : 'text-textMuted'}`}>EN</a>
+    </div>
+
+    <a href="#contact" class="px-8 py-3 rounded-xl bg-accent text-white font-bold mt-4">
       {lang === 'ru' ? 'Связаться' : 'Contact'}
     </a>
-  </div>
-</header>
+  </div></header>
 
 <script>
   const menuToggle = document.getElementById('menu-toggle');
