@@ -4,11 +4,12 @@ import { getLangFromUrl, useTranslations } from '../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 <header class="fixed top-6 left-0 w-full z-50 pointer-events-none">
   <div class="max-w-6xl mx-auto px-6">
     <div class="bg-dark/60 backdrop-blur-xl border border-white/10 rounded-2xl h-16 flex items-center justify-between px-6 pointer-events-auto shadow-2xl">
-      <a href={lang === 'ru' ? '/' : `/${lang}/`} class="flex items-center gap-3 group">
+      <a href={lang === 'ru' ? `${base}/` : `${base}/${lang}/`} class="flex items-center gap-3 group">
         <div class="w-10 h-10 flex items-center justify-center overflow-hidden rounded-xl bg-white/5 border border-white/10 group-hover:border-accent/50 transition-all p-1 relative">
           <img src={logo.src} alt="Wayfis Logo" class="w-full h-full object-contain relative z-10" />
           <div class="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity bg-accent blur-md"></div>
@@ -16,15 +17,15 @@ const t = useTranslations(lang);
         <span class="text-xl font-bold tracking-tight">Wayfis</span>
       </a>    
       <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-textMuted">
-        <a href={lang === 'ru' ? '/' : `/${lang}/`} class="hover:text-white transition-colors relative group">
+        <a href={lang === 'ru' ? `${base}/` : `${base}/${lang}/`} class="hover:text-white transition-colors relative group">
           {lang === 'ru' ? 'Главная' : 'Home'}
           <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all group-hover:w-full"></span>
         </a>
-        <a href={lang === 'ru' ? '/portfolio' : `/${lang}/portfolio`} class="hover:text-white transition-colors relative group">
+        <a href={lang === 'ru' ? `${base}/portfolio` : `${base}/${lang}/portfolio`} class="hover:text-white transition-colors relative group">
           {t('nav.portfolio')}
           <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all group-hover:w-full"></span>
         </a>
-        <a href={lang === 'ru' ? '/reviews' : `/${lang}/reviews`} class="hover:text-white transition-colors relative group">
+        <a href={lang === 'ru' ? `${base}/reviews` : `${base}/${lang}/reviews`} class="hover:text-white transition-colors relative group">
           {t('nav.reviews')}
           <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all group-hover:w-full"></span>
         </a>
@@ -32,10 +33,9 @@ const t = useTranslations(lang);
 
       <div class="flex items-center gap-4">
         <div class="flex bg-white/5 rounded-full p-1 border border-white/10">
-          <a href="/" class={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'ru' ? 'bg-accent text-white' : 'text-textMuted hover:text-white'}`}>RU</a>
-          <a href="/en/" class={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'en' ? 'bg-accent text-white' : 'text-textMuted hover:text-white'}`}>EN</a>
-        </div>
-        <a href="#contact" class="px-5 py-2 rounded-xl border border-white/10 hover:bg-white/5 transition-all text-sm font-medium backdrop-blur-md">
+          <a href={`${base}/`} class={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'ru' ? 'bg-accent text-white' : 'text-textMuted hover:text-white'}`}>RU</a>
+          <a href={`${base}/en/`} class={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'en' ? 'bg-accent text-white' : 'text-textMuted hover:text-white'}`}>EN</a>
+        </div>        <a href="#contact" class="px-5 py-2 rounded-xl border border-white/10 hover:bg-white/5 transition-all text-sm font-medium backdrop-blur-md">
           {lang === 'ru' ? 'Связаться' : 'Contact'}
         </a>
       </div>
