@@ -2,42 +2,10 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { getLangFromUrl } from '../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-
-const categories = [
-  {
-    id: "vpn",
-    title: "Telegram VPN Бот + Сайт",
-    desc: "Разработали Telegram-бота и сайт для автоматической выдачи VPN.",
-    fullDesc: "Полноценная экосистема для продажи VPN-услуг. Бот обрабатывает платежи через Qiwi/Lava, выдает конфигурации WireGuard. Сайт служит витриной и личным кабинетом пользователя.",
-    count: "Qiwi VPN",
-    tags: ["Python", "Node.js", "MySQL"],
-    link: "https://t.me/your_bot_link",
-    screenshots: [
-      `${base}/projects/vpn1.jpg`,
-      `${base}/projects/vpn2.jpg`,
-      `${base}/projects/vpn3.jpg`,
-      `${base}/projects/vpn4.jpg`,
-      `${base}/projects/vpn5.jpg`,
-      `${base}/projects/vpn6.jpg`
-    ]
-  },
-  {
-    id: "sites",
-    title: "Сайты",
-    desc: "Лендинги, витрины и личные кабинеты.",
-    fullDesc: "Разработка современных веб-интерфейсов с упором на UX/UI. Используем Astro для скорости и Tailwind для гибкости дизайна.",
-    count: "5 кейсов",
-    tags: ["Astro", "Tailwind", "React"],
-    link: "https://wayfis.ru",
-    screenshots: [
-      `${base}/projects/site1.jpg`,
-      `${base}/projects/site2.jpg`
-    ]
-  }
-];
 ---
 
 <Layout title="Портфолио | Мои работы">
