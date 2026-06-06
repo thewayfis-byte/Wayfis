@@ -1,16 +1,19 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { getLangFromUrl } from '../i18n/utils';
+// Исправленный путь - поднимаемся на 2 уровня вверх
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getLangFromUrl } from '../../i18n/utils';
 
 // Импорт скриншотов
-import vpn1 from '../assets/projects/Vpn1.jpg';
-import vpn2 from '../assets/projects/Vpn2.jpg';
-import vpn3 from '../assets/projects/Vpn3.jpg';
-import vpn4 from '../assets/projects/Vpn4.jpg';
-import vpn5 from '../assets/projects/Vpn5.jpg';
-import vpn6 from '../assets/projects/Vpn6.jpg';
+import Vpn1 from '../../assets/projects/Vpn1.jpg';
+import Vpn2 from '../../assets/projects/Vpn2.jpg';
+import Vpn3 from '../../assets/projects/Vpn3.jpg';
+import Vpn4 from '../../assets/projects/Vpn4.jpg';
+import Vpn5 from '../../assets/projects/Vpn5.jpg';
+import Vpn6 from '../../assets/projects/Vpn6.jpg';
+import site1 from '../../assets/projects/site1.jpg';
+import site2 from '../../assets/projects/site2.jpg';
 
 const lang = getLangFromUrl(Astro.url);
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -18,20 +21,20 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const categories = [
   {
     id: "vpn",
-    title: "Telegram VPN Бот + Сайт",
-    desc: "Разработали Telegram-бота и сайт для автоматической выдачи VPN.",
-    fullDesc: "Полноценная экосистема для продажи VPN-услуг. Бот обрабатывает платежи через Qiwi/Lava, выдает конфигурации WireGuard. Сайт служит витриной и личным кабинетом пользователя.",
+    title: "Telegram VPN Bot + Website",
+    desc: "Developed a Telegram bot and website for automatic VPN issuance.",
+    fullDesc: "A complete ecosystem for selling VPN services. The bot processes payments via Qiwi/Lava, issues WireGuard configurations. The website serves as a storefront and user cabinet.",
     count: "Qiwi VPN",
     tags: ["Python", "Node.js", "MySQL"],
     link: "https://t.me/your_bot_link",
-    screenshots: [vpn1.src, vpn2.src, vpn3.src, vpn4.src, vpn5.src, vpn6.src]
+    screenshots: [Vpn1.src, Vpn2.src, Vpn3.src, Vpn4.src, Vpn5.src, Vpn6.src]
   },
   {
     id: "sites",
-    title: "Сайты",
-    desc: "Лендинги, витрины и личные кабинеты.",
-    fullDesc: "Разработка современных веб-интерфейсов с упором на UX/UI. Используем Astro для скорости и Tailwind для гибкости дизайна.",
-    count: "5 кейсов",
+    title: "Websites",
+    desc: "Landing pages, storefronts and user cabinets.",
+    fullDesc: "Development of modern web interfaces with a focus on UX/UI. Using Astro for speed and Tailwind for design flexibility.",
+    count: "5 cases",
     tags: ["Astro", "Tailwind", "React"],
     link: "https://wayfis.ru",
     screenshots: [site1.src, site2.src]
@@ -39,16 +42,16 @@ const categories = [
 ];
 ---
 
-<Layout title="Портфолио | Мои работы">
+<Layout title="Portfolio | My Work">
   <Header />
 
   <main class="pt-32 pb-20 px-4">
     <div class="max-w-6xl mx-auto">
       <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-accent to-accent/50 bg-clip-text text-transparent">
-        Портфолио
+        Portfolio
       </h1>
       <p class="text-text-secondary text-lg mb-12 max-w-2xl">
-        Реализованные проекты, которыми мы гордимся
+        Projects we're proud of
       </p>
 
       <div class="grid md:grid-cols-2 gap-8">
@@ -82,7 +85,7 @@ const categories = [
                 class="open-modal w-full px-4 py-2 bg-accent/10 hover:bg-accent/20 text-accent rounded-lg transition-all duration-300 font-medium"
                 data-project={JSON.stringify(category)}
               >
-                Подробнее →
+                Learn more →
               </button>
             </div>
           </div>
@@ -91,7 +94,7 @@ const categories = [
     </div>
   </main>
 
-  <!-- Модальное окно -->
+  <!-- Modal Window -->
   <div id="modal" class="fixed inset-0 bg-black/90 backdrop-blur-lg z-50 opacity-0 pointer-events-none transition-all duration-300 flex items-center justify-center p-4">
     <div class="max-w-4xl w-full max-h-[90vh] bg-surface rounded-2xl overflow-hidden">
       <div class="flex justify-between items-center p-6 border-b border-accent/10">
@@ -119,7 +122,7 @@ const categories = [
           <p id="modal-desc" class="text-text-secondary mb-4"></p>
           <div id="modal-tags" class="flex flex-wrap gap-2 mb-4"></div>
           <a id="modal-link" href="#" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-accent hover:bg-accent/80 text-white rounded-lg transition-all">
-            Перейти к проекту →
+            View Project →
           </a>
         </div>
       </div>
@@ -183,7 +186,6 @@ const categories = [
     document.body.style.overflow = '';
   }
 
-  // Обработчики событий
   if (prevBtn) {
     prevBtn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -204,7 +206,6 @@ const categories = [
     });
   }
 
-  // Кнопки открытия модального окна
   document.querySelectorAll('.open-modal').forEach(btn => {
     btn.addEventListener('click', () => {
       const projectData = btn.getAttribute('data-project');
@@ -215,19 +216,16 @@ const categories = [
     });
   });
 
-  // Кнопки закрытия
   document.querySelectorAll('.modal-close').forEach(btn => {
     btn.addEventListener('click', closeModal);
   });
 
-  // Закрытие по клику на фон
   if (modal) {
     modal.addEventListener('click', (e) => {
       if (e.target === modal) closeModal();
     });
   }
 
-  // Клавиатура
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeModal();
     if (e.key === 'ArrowLeft' && modal && !modal.classList.contains('opacity-0')) {
