@@ -1,8 +1,7 @@
----
-import Layout from '../../layouts/Layout.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
-import laptop from '../../image/laptop.png';
+import { getLangFromUrl } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <Layout title="Wayfis | Web & Bot Development">
@@ -31,15 +30,14 @@ import laptop from '../../image/laptop.png';
 						Professional ecosystem development: from high-load bots to premium web interfaces.
 					</p>					
 					<div class="flex flex-col sm:flex-row gap-4 md:gap-6">
-						<a href="/en/catalog" class="px-8 md:px-10 py-4 md:py-5 bg-accent hover:bg-accent-hover text-white rounded-2xl font-bold transition-all flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(59,130,246,0.3)] hover:shadow-[0_0_40px_rgba(59,130,246,0.5)] hover:-translate-y-1 text-center">
+						<a href={`${base}/en/catalog`} class="px-8 md:px-10 py-4 md:py-5 bg-accent hover:bg-accent-hover text-white rounded-2xl font-bold transition-all flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(59,130,246,0.3)] hover:shadow-[0_0_40px_rgba(59,130,246,0.5)] hover:-translate-y-1 text-center">
 							Start Project <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
 						</a>
-						<a href="/en/portfolio" class="px-8 md:px-10 py-4 md:py-5 bg-white/5 hover:bg-white/10 text-white rounded-2xl font-bold border border-white/10 transition-all backdrop-blur-sm hover:-translate-y-1 text-center">
+						<a href={`${base}/en/portfolio`} class="px-8 md:px-10 py-4 md:py-5 bg-white/5 hover:bg-white/10 text-white rounded-2xl font-bold border border-white/10 transition-all backdrop-blur-sm hover:-translate-y-1 text-center">
 							Cases
 						</a>
 					</div>
 				</div>
-
 				<!-- Abstract Decoration -->
 				<div class="hidden lg:block absolute right-0 top-0 w-1/2 h-full pointer-events-none">
 					<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] border border-white/5 rounded-full"></div>
@@ -84,11 +82,10 @@ import laptop from '../../image/laptop.png';
 				<div class="max-w-2xl">
 					<h2 class="text-5xl font-black mb-6 tracking-tight font-mono"><span class="text-accent">class</span> Services {}</h2>
 					<p class="text-textMuted text-lg font-mono">// I don't just write code, I create tools to scale your business.</p>
-				</div>				<a href="/en/catalog" class="group flex items-center gap-3 text-accent font-bold text-lg font-mono">
+				</div>				<a href={`${base}/en/catalog`} class="group flex items-center gap-3 text-accent font-bold text-lg font-mono">
 					get_all_services() <svg class="group-hover:translate-x-2 transition-transform" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
 				</a>
 			</div>
-
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 				<div class="bg-card p-12 rounded-[3rem] border border-white/5 hover:border-accent/30 transition-all group relative overflow-hidden font-mono">
 					<div class="absolute top-4 right-8 text-[10px] text-white/10 uppercase tracking-widest">service_01.ts</div>
