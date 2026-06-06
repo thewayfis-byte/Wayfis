@@ -1,55 +1,72 @@
 ---
 import logo from '../image/logo.png';
-import { getLangFromUrl } from '../i18n/utils';
+import { getLangFromUrl, getLangPrefix } from '../i18n/utils';
+import { site } from '../data/site';
 
 const lang = getLangFromUrl(Astro.url);
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const prefix = getLangPrefix(lang);
 ---
 <footer class="bg-card border-t border-white/5 pt-16 pb-8 mt-20 relative overflow-hidden">
   <div class="max-w-7xl mx-auto px-6 relative z-10">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
       <div class="col-span-1">
-        <a href={lang === 'ru' ? `${base}/` : `${base}/${lang}/`} class="flex items-center gap-3 mb-6 group">
+        <a href={`${prefix}/`} class="flex items-center gap-3 mb-6 group">
           <div class="w-10 h-10 flex items-center justify-center overflow-hidden rounded-xl bg-white/5 border border-white/10 group-hover:border-accent/50 transition-all p-1">
             <img src={logo.src} alt="Wayfis Logo" class="w-full h-full object-contain" />
           </div>
           <span class="text-xl font-bold tracking-tight text-white font-mono">Wayfis.init()</span>
         </a>
         <p class="text-textMuted text-sm leading-relaxed font-mono">
-          {lang === 'ru' 
-            ? '// Разработка современных цифровых решений с фокусом на эстетику и функциональность.' 
-            : '// Developing modern digital solutions with a focus on aesthetics and functionality.'}
+          {lang === 'ru'
+            ? '// Разработка современных цифровых решений с фокусом на эстетику и функциональность.'
+            : '// Modern digital solutions with a focus on aesthetics and performance.'}
         </p>
       </div>
-      
+
       <div>
-        <h4 class="text-white font-bold mb-6 font-mono text-xs uppercase tracking-widest text-accent">01. {lang === 'ru' ? 'Навигатор' : 'Navigator'}</h4>
+        <h4 class="text-white font-bold mb-6 font-mono text-xs uppercase tracking-widest text-accent">
+          01. {lang === 'ru' ? 'Навигатор' : 'Navigator'}
+        </h4>
         <ul class="space-y-4 text-sm text-textMuted font-mono">
-          <li><a href={lang === 'ru' ? `${base}/` : `${base}/${lang}/`} class="hover:text-accent transition-colors">root/home</a></li>
-          <li><a href={lang === 'ru' ? `${base}/catalog` : `${base}/${lang}/catalog`} class="hover:text-accent transition-colors">root/services</a></li>
-          <li><a href={lang === 'ru' ? `${base}/portfolio` : `${base}/${lang}/portfolio`} class="hover:text-accent transition-colors">root/cases</a></li>
-          <li><a href={lang === 'ru' ? `${base}/reviews` : `${base}/${lang}/reviews`} class="hover:text-accent transition-colors">root/feedback</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="text-white font-bold mb-6 font-mono text-xs uppercase tracking-widest text-accent">02. Соцсети</h4>
-        <ul class="space-y-4 text-sm text-textMuted font-mono">
-          <li><a href="#" class="hover:text-accent transition-colors">social/telegram</a></li>
-          <li><a href="#" class="hover:text-accent transition-colors">social/github</a></li>
-          <li><a href="#" class="hover:text-accent transition-colors">social/vkontakte</a></li>
+          <li><a href={`${prefix}/`} class="hover:text-accent transition-colors">root/home</a></li>
+          <li><a href={`${prefix}/catalog`} class="hover:text-accent transition-colors">root/services</a></li>
+          <li><a href={`${prefix}/portfolio`} class="hover:text-accent transition-colors">root/cases</a></li>
+          <li><a href={`${prefix}/reviews`} class="hover:text-accent transition-colors">root/feedback</a></li>
         </ul>
       </div>
 
       <div>
-        <h4 class="text-white font-bold mb-6 font-mono text-xs uppercase tracking-widest text-accent">03. Legal</h4>
+        <h4 class="text-white font-bold mb-6 font-mono text-xs uppercase tracking-widest text-accent">
+          02. {lang === 'ru' ? 'Соцсети' : 'Social'}
+        </h4>
         <ul class="space-y-4 text-sm text-textMuted font-mono">
-          <li><a href="#" class="hover:text-accent transition-colors">policy.md</a></li>
-          <li><a href="#" class="hover:text-accent transition-colors">terms.md</a></li>
+          <li><a href={site.telegram} target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">social/telegram</a></li>
+          <li><a href={site.github} target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">social/github</a></li>
+          <li><a href={site.vk} target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">social/vkontakte</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-white font-bold mb-6 font-mono text-xs uppercase tracking-widest text-accent">
+          03. {lang === 'ru' ? 'Документы' : 'Legal'}
+        </h4>
+        <ul class="space-y-4 text-sm text-textMuted font-mono">
+          <li><a href={`${prefix}/privacy`} class="hover:text-accent transition-colors">legal/privacy.md</a></li>
+          <li><a href={`${prefix}/terms`} class="hover:text-accent transition-colors">legal/terms.md</a></li>
+          <li><a href={`${prefix}/cookies`} class="hover:text-accent transition-colors">legal/cookies.md</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-white font-bold mb-6 font-mono text-xs uppercase tracking-widest text-accent">04. Contact</h4>
+        <ul class="space-y-4 text-sm text-textMuted font-mono">
+          <li><a href={site.telegram} target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">t.me/wayfis</a></li>
+          <li><a href={`mailto:${site.email}`} class="hover:text-accent transition-colors">{site.email}</a></li>
+          <li><a href={`${prefix}/#contact`} class="hover:text-accent transition-colors">contact.form</a></li>
         </ul>
       </div>
     </div>
 
-    <!-- Programmer Console -->
     <div class="mb-12 p-6 bg-card/60 rounded-2xl border border-white/5 font-mono text-[11px] relative overflow-hidden group backdrop-blur-sm">
       <div class="flex items-center justify-between mb-4 border-b border-white/5 pb-2">
         <div class="flex items-center gap-2">
@@ -65,18 +82,18 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <div class="space-y-1">
         <p class="text-green-400/80"><span class="text-accent">guest@wayfis:</span><span class="text-white">~</span>$ sudo systemctl status wayfis-portfolio</p>
         <p class="text-white/50">● wayfis-portfolio.service - Wayfis Portfolio Website</p>
-        <p class="text-white/50">   Loaded: loaded (/etc/systemd/system/wayfis-portfolio.service; enabled; vendor preset: enabled)</p>
-        <p class="text-green-400/60">   Active: active (running) since Fri 2026-06-05 02:37:55 UTC</p>
-        <p class="text-white/50">   Main PID: 1337 (astro-dev)</p>
-        <p class="text-white/50">   Tasks: 42 (limit: 4915)</p>
-        <p class="text-white/50">   Memory: 128.4M</p>
+        <p class="text-green-400/60">   Active: active (running)</p>
         <p class="text-green-400/80 animate-pulse"><span class="text-accent">guest@wayfis:</span><span class="text-white">~</span>$ _</p>
       </div>
     </div>
-    
+
     <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] text-textMuted font-mono uppercase tracking-widest">
-      <p>© 2026 Wayfis. All rights reserved.</p>
-      <p>Built with <span class="text-accent">Astro</span> & <span class="text-accent">Tailwind</span></p>
+      <p>© 2026 Wayfis. {lang === 'ru' ? 'Все права защищены.' : 'All rights reserved.'}</p>
+      <div class="flex flex-wrap justify-center gap-4 normal-case tracking-normal">
+        <a href={`${prefix}/privacy`} class="hover:text-accent transition-colors">{lang === 'ru' ? 'Конфиденциальность' : 'Privacy'}</a>
+        <a href={`${prefix}/terms`} class="hover:text-accent transition-colors">{lang === 'ru' ? 'Соглашение' : 'Terms'}</a>
+        <a href={`${prefix}/cookies`} class="hover:text-accent transition-colors">Cookie</a>
+      </div>
     </div>
   </div>
 </footer>

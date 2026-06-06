@@ -1,31 +1,35 @@
 ---
 import logo from '../image/logo.png';
-import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const prefix = lang === 'ru' ? base : `${base}/en`;
+const ruPath = getLocalizedPath(Astro.url, 'ru');
+const enPath = getLocalizedPath(Astro.url, 'en');
 ---
 <header class="fixed top-6 left-0 w-full z-50 pointer-events-none">
   <div class="max-w-6xl mx-auto px-6">
-    <div class="bg-dark/60 backdrop-blur-xl border border-white/10 rounded-2xl h-16 flex items-center justify-between px-6 pointer-events-auto shadow-2xl">
-      <a href={lang === 'ru' ? `${base}/` : `${base}/${lang}/`} class="flex items-center gap-3 group">
+    <div class="bg-dark/60 backdrop-blur-xl border border-white/10 rounded-2xl h-16 flex items-center justify-between px-6 pointer-events-auto shadow-2xl animate-header-in">
+      <a href={`${prefix}/`} class="flex items-center gap-3 group">
         <div class="w-10 h-10 flex items-center justify-center overflow-hidden rounded-xl bg-white/5 border border-white/10 group-hover:border-accent/50 transition-all p-1 relative">
           <img src={logo.src} alt="Wayfis Logo" class="w-full h-full object-contain relative z-10" />
           <div class="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity bg-accent blur-md"></div>
         </div>
         <span class="text-xl font-bold tracking-tight">Wayfis</span>
-      </a>    
+      </a>
+
       <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-textMuted">
-        <a href={lang === 'ru' ? `${base}/` : `${base}/${lang}/`} class="hover:text-white transition-colors relative group">
+        <a href={`${prefix}/`} class="hover:text-white transition-colors relative group">
           {lang === 'ru' ? 'Главная' : 'Home'}
           <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all group-hover:w-full"></span>
         </a>
-        <a href={lang === 'ru' ? `${base}/portfolio` : `${base}/${lang}/portfolio`} class="hover:text-white transition-colors relative group">
+        <a href={`${prefix}/portfolio`} class="hover:text-white transition-colors relative group">
           {t('nav.portfolio')}
           <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all group-hover:w-full"></span>
         </a>
-        <a href={lang === 'ru' ? `${base}/reviews` : `${base}/${lang}/reviews`} class="hover:text-white transition-colors relative group">
+        <a href={`${prefix}/reviews`} class="hover:text-white transition-colors relative group">
           {t('nav.reviews')}
           <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all group-hover:w-full"></span>
         </a>
@@ -33,14 +37,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       <div class="flex items-center gap-4">
         <div class="flex bg-white/5 rounded-full p-1 border border-white/10">
-          <a href={`${base}/`} class={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'ru' ? 'bg-accent text-white' : 'text-textMuted hover:text-white'}`}>RU</a>
-          <a href={`${base}/en/`} class={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'en' ? 'bg-accent text-white' : 'text-textMuted hover:text-white'}`}>EN</a>
+          <a href={ruPath} class={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'ru' ? 'bg-accent text-white' : 'text-textMuted hover:text-white'}`}>RU</a>
+          <a href={enPath} class={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'en' ? 'bg-accent text-white' : 'text-textMuted hover:text-white'}`}>EN</a>
         </div>
-        <a href="#contact" class="hidden sm:block px-5 py-2 rounded-xl border border-white/10 hover:bg-white/5 transition-all text-sm font-medium backdrop-blur-md">
+        <a href={`${prefix}/#contact`} class="hidden sm:block px-5 py-2 rounded-xl border border-white/10 hover:bg-white/5 transition-all text-sm font-medium backdrop-blur-md">
           {lang === 'ru' ? 'Связаться' : 'Contact'}
         </a>
-        <!-- Mobile Menu Button -->
-        <button id="menu-toggle" class="md:hidden p-2 text-textMuted hover:text-white transition-colors pointer-events-auto">
+        <button id="menu-toggle" class="md:hidden p-2 text-textMuted hover:text-white transition-colors pointer-events-auto" aria-label="Menu">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
           </svg>
@@ -49,27 +52,27 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </div>
   </div>
 
-  <!-- Mobile Menu Overlay -->
   <div id="mobile-menu" class="fixed inset-0 bg-dark/95 backdrop-blur-2xl z-[-1] flex flex-col items-center justify-center gap-8 transition-all duration-300 opacity-0 pointer-events-none md:hidden">
-    <a href={lang === 'ru' ? `${base}/` : `${base}/${lang}/`} class="text-2xl font-bold hover:text-accent transition-colors">
+    <a href={`${prefix}/`} class="text-2xl font-bold hover:text-accent transition-colors">
       {lang === 'ru' ? 'Главная' : 'Home'}
     </a>
-    <a href={lang === 'ru' ? `${base}/portfolio` : `${base}/${lang}/portfolio`} class="text-2xl font-bold hover:text-accent transition-colors">
+    <a href={`${prefix}/portfolio`} class="text-2xl font-bold hover:text-accent transition-colors">
       {t('nav.portfolio')}
     </a>
-    <a href={lang === 'ru' ? `${base}/reviews` : `${base}/${lang}/reviews`} class="text-2xl font-bold hover:text-accent transition-colors">
+    <a href={`${prefix}/reviews`} class="text-2xl font-bold hover:text-accent transition-colors">
       {t('nav.reviews')}
     </a>
-    
+
     <div class="flex bg-white/5 rounded-full p-1 border border-white/10 mt-4">
-      <a href={`${base}/`} class={`px-6 py-2 rounded-full text-sm font-bold transition-all ${lang === 'ru' ? 'bg-accent text-white' : 'text-textMuted'}`}>RU</a>
-      <a href={`${base}/en/`} class={`px-6 py-2 rounded-full text-sm font-bold transition-all ${lang === 'en' ? 'bg-accent text-white' : 'text-textMuted'}`}>EN</a>
+      <a href={ruPath} class={`px-6 py-2 rounded-full text-sm font-bold transition-all ${lang === 'ru' ? 'bg-accent text-white' : 'text-textMuted'}`}>RU</a>
+      <a href={enPath} class={`px-6 py-2 rounded-full text-sm font-bold transition-all ${lang === 'en' ? 'bg-accent text-white' : 'text-textMuted'}`}>EN</a>
     </div>
 
-    <a href="#contact" class="px-8 py-3 rounded-xl bg-accent text-white font-bold mt-4">
+    <a href={`${prefix}/#contact`} class="px-8 py-3 rounded-xl bg-accent text-white font-bold mt-4">
       {lang === 'ru' ? 'Связаться' : 'Contact'}
     </a>
-  </div></header>
+  </div>
+</header>
 
 <script>
   const menuToggle = document.getElementById('menu-toggle');
@@ -89,9 +92,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     }
   });
 
-  // Close menu on link click
-  const mobileLinks = mobileMenu?.querySelectorAll('a');
-  mobileLinks?.forEach(link => {
+  mobileMenu?.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', () => {
       mobileMenu?.classList.add('opacity-0', 'pointer-events-none');
       mobileMenu?.classList.remove('opacity-100', 'pointer-events-auto');

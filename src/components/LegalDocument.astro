@@ -1,0 +1,57 @@
+---
+import { legalDocuments, type LegalDocKey } from '../data/legal';
+import { getLangFromUrl, getLangPrefix } from '../i18n/utils';
+
+interface Props {
+  doc: LegalDocKey;
+}
+
+const { doc } = Astro.props;
+const lang = getLangFromUrl(Astro.url) as 'ru' | 'en';
+const content = legalDocuments[doc][lang];
+const prefix = getLangPrefix(lang);
+
+const links = {
+  privacy: { ru: 'Политика конфиденциальности', en: 'Privacy Policy' },
+  terms: { ru: 'Пользовательское соглашение', en: 'Terms of Service' },
+  cookies: { ru: 'Политика cookie', en: 'Cookie Policy' },
+};
+---
+
+<article class="max-w-3xl mx-auto px-6">
+  <header class="mb-10">
+    <p class="text-accent text-xs font-mono uppercase tracking-widest mb-3">legal/{doc}.md</p>
+    <h1 class="text-3xl sm:text-4xl md:text-5xl font-black mb-4 tracking-tight font-mono text-white">
+      {content.title}
+    </h1>
+    <p class="text-textMuted font-mono text-sm">
+      {lang === 'ru' ? 'Обновлено:' : 'Updated:'} {content.updated}
+    </p>
+  </header>
+
+  <div class="bg-card rounded-[2rem] border border-white/5 p-6 md:p-10 font-mono text-sm md:text-base leading-relaxed space-y-8">
+    <p class="text-textMuted">{content.intro}</p>
+
+    {content.sections.map((section) => (
+      <section>
+        <h2 class="text-white font-bold mb-3 text-base md:text-lg">{section.heading}</h2>
+        <div class="space-y-3 text-textMuted">
+          {section.paragraphs.map((paragraph) => (
+            <p>{paragraph}</p>
+          ))}
+        </div>
+      </section>
+    ))}
+  </div>
+
+  <nav class="mt-10 flex flex-wrap gap-3 font-mono text-xs">
+    {(Object.keys(links) as LegalDocKey[]).filter((key) => key !== doc).map((key) => (
+      <a href={`${prefix}/${key}`} class="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-textMuted hover:text-accent hover:border-accent/30 transition-all">
+        {links[key][lang]}
+      </a>
+    ))}
+    <a href={`${prefix}/`} class="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-textMuted hover:text-accent hover:border-accent/30 transition-all">
+      {lang === 'ru' ? 'На главную' : 'Home'}
+    </a>
+  </nav>
+</article>

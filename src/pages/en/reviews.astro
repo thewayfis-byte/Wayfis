@@ -2,56 +2,24 @@
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-
-const reviews = [
-  {
-    author: "Сергей Тестовый",
-    date: "3 июн. 2026 г.",
-    product: "Telegram Bot Shop",
-    content: "Отличный бот, все работает из коробки. Автор помог с настройкой API, за что отдельное спасибо!",
-    rating: 5,
-    avatar: "CT"
-  },
-  {
-    author: "Александр",
-    date: "1 июн. 2026 г.",
-    product: "Landing Page Template",
-    content: "Дизайн просто пушка! Очень чистый код, легко адаптировал под свои нужды.",
-    rating: 5,
-    avatar: "A"
-  },
-  {
-    author: "Дмитрий",
-    date: "28 мая 2026 г.",
-    product: "Admin Dashboard",
-    content: "Пока не разобрался, как использовать покупку в своём проекте. Возможно, не хватает понятной инструкции.",
-    rating: 3,
-    avatar: "D"
-  }
-];
+import ReviewsSection from '../../components/ReviewsSection.astro';
 ---
 
-<Layout title="Отзывы | Wayfis">
+<Layout title="Reviews | Wayfis">
   <Header />
-  <main class="pt-32 pb-20 min-h-[80vh] flex items-center justify-center">
-    <section class="max-w-7xl mx-auto px-6 text-center">
-      <div class="relative bg-card rounded-[3rem] p-12 md:p-24 overflow-hidden border border-white/5 shadow-2xl">
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-accent/5 blur-[120px] -z-10"></div>
-        
-        <div class="w-20 h-20 bg-accent/10 rounded-3xl flex items-center justify-center text-accent mx-auto mb-8 border border-accent/20">
-          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path><path d="M8 9h8"></path><path d="M8 13h6"></path></svg>
-        </div>
-        
-        <h1 class="text-5xl font-bold mb-6">Раздел в разработке</h1>
-        <p class="text-textMuted text-lg max-w-md mx-auto leading-relaxed mb-10">
-          Мы работаем над системой верификации отзывов, чтобы вы могли видеть только честные мнения наших клиентов.
-        </p>
-        
-        <a href="/" class="inline-flex items-center gap-2 px-8 py-4 bg-white/5 hover:bg-white/10 text-white rounded-2xl font-bold border border-white/10 transition-all">
-          Вернуться на главную
+  <main class="pt-32 pb-20 min-h-[60vh] flex items-center justify-center">
+    <div class="text-center">
+      <h1 class="text-4xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/40">
+        Under Development
+      </h1>
+      <p class="text-textMuted text-lg md:text-xl max-w-2xl mx-auto">
+        We are working on this section. Reviews from our clients will appear here soon.
+      </p>
+      <div class="mt-10">
+        <a href="/en" class="inline-flex items-center justify-center px-8 py-3 rounded-full bg-white text-black font-medium hover:bg-opacity-90 transition-all">
+          Back to Home
         </a>
       </div>
-    </section>
-  </main>
-  <Footer />
+    </div>
+  </main>  <Footer />
 </Layout>

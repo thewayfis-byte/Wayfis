@@ -1,0 +1,55 @@
+---
+import { getLangFromUrl } from '../i18n/utils';
+import { site } from '../data/site';
+
+const lang = getLangFromUrl(Astro.url);
+
+const copy = {
+  ru: {
+    title: 'Связаться',
+    subtitle: '// Обсудим ваш проект и подберём решение под задачу',
+    telegram: 'Написать в Telegram',
+    email: 'Отправить email',
+    response: 'Отвечаю в течение нескольких часов',
+  },
+  en: {
+    title: 'Contact',
+    subtitle: '// Let\'s discuss your project and find the right solution',
+    telegram: 'Message on Telegram',
+    email: 'Send email',
+    response: 'I usually reply within a few hours',
+  },
+}[lang];
+---
+
+<section id="contact" class="max-w-[1600px] mx-auto px-6 mb-20">
+  <div class="bg-card rounded-[2.5rem] md:rounded-[3rem] p-8 md:p-16 border border-white/5 relative overflow-hidden card-hover-lift">
+    <div class="absolute top-[-20%] right-[-10%] w-[50%] h-[120%] bg-accent/10 blur-[120px] -z-10"></div>
+
+    <div class="max-w-2xl">
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-4 tracking-tight font-mono">
+        <span class="text-accent">async</span> contact()
+      </h2>
+      <p class="text-textMuted text-base md:text-lg font-mono mb-8">{copy.subtitle}</p>
+      <p class="text-sm text-textMuted font-mono mb-8">{copy.response}</p>
+
+      <div class="flex flex-col sm:flex-row gap-4">
+        <a
+          href={site.telegram}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="px-8 py-4 bg-accent hover:bg-accent-hover text-white rounded-2xl font-bold transition-all flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(59,130,246,0.3)] hover:-translate-y-1"
+        >
+          {copy.telegram}
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+        <a
+          href={`mailto:${site.email}`}
+          class="px-8 py-4 bg-white/5 hover:bg-white/10 text-white rounded-2xl font-bold border border-white/10 transition-all backdrop-blur-sm hover:-translate-y-1 text-center"
+        >
+          {copy.email}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
