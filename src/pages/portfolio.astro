@@ -14,7 +14,8 @@ import vpn6 from '../assets/projects/vpn6.jpg';
 import site1 from '../assets/projects/site1.jpg';
 import site2 from '../assets/projects/site2.jpg';
 
-const lang = getLangFromUrl(Astro.url);const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const lang = getLangFromUrl(Astro.url);
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const categories = [
   {
@@ -41,60 +42,203 @@ const categories = [
 ---
 
 <Layout title="Портфолио | Мои работы">
-      currentProject = project;
-      currentSlideIndex = 0;
-      
-      modalTitle!.textContent = project.title;
-      modalDesc!.textContent = project.fullDesc;
-      totalSlidesEl!.textContent = project.screenshots.length.toString();
-      modalLink!.href = project.link;
-      modalLink!.style.display = project.link === "#" ? 'none' : 'flex';
+  <Header />
 
-      modalTags!.innerHTML = project.tags.map((tag: string) => 
+  <main class="pt-32 pb-20 px-4">
+    <div class="max-w-6xl mx-auto">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-accent to-accent/50 bg-clip-text text-transparent">
+        Портфолио
+      </h1>
+      <p class="text-text-secondary text-lg mb-12 max-w-2xl">
+        Реализованные проекты, которыми мы гордимся
+      </p>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        {categories.map((category) => (
+          <div class="bg-surface border border-accent/10 rounded-2xl overflow-hidden hover:border-accent/30 transition-all duration-300">
+            <div class="relative h-48 overflow-hidden">
+              <img 
+                src={category.screenshots[0]} 
+                alt={category.title}
+                class="w-full h-full object-cover"
+              />
+            </div>
+            
+            <div class="p-6">
+              <div class="flex items-start justify-between mb-3">
+                <h3 class="text-xl font-bold text-text-primary">{category.title}</h3>
+                <span class="text-sm text-accent font-mono">{category.count}</span>
+              </div>
+              
+              <p class="text-text-secondary mb-4">{category.desc}</p>
+              
+              <div class="flex flex-wrap gap-2 mb-4">
+                {category.tags.map((tag) => (
+                  <span class="px-2 py-1 bg-accent/10 text-accent rounded text-xs font-mono">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              
+              <button 
+                class="open-modal w-full px-4 py-2 bg-accent/10 hover:bg-accent/20 text-accent rounded-lg transition-all duration-300 font-medium"
+                data-project={JSON.stringify(category)}
+              >
+                Подробнее →
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </main>
+
+  <!-- Модальное окно -->
+  <div id="modal" class="fixed inset-0 bg-black/90 backdrop-blur-lg z-50 opacity-0 pointer-events-none transition-all duration-300 flex items-center justify-center p-4">
+    <div class="max-w-4xl w-full max-h-[90vh] bg-surface rounded-2xl overflow-hidden">
+      <div class="flex justify-between items-center p-6 border-b border-accent/10">
+        <h3 id="modal-title" class="text-2xl font-bold text-text-primary"></h3>
+        <button class="modal-close text-text-secondary hover:text-accent transition-colors text-3xl leading-none">&times;</button>
+      </div>
+      
+      <div class="flex flex-col lg:flex-row gap-6 p-6">
+        <div class="flex-1">
+          <div class="relative">
+            <img id="modal-image" src="" alt="" class="w-full h-64 lg:h-80 object-cover rounded-lg">
+            <button id="prev-slide" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 transition-all">
+              ←
+            </button>
+            <button id="next-slide" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 transition-all">
+              →
+            </button>
+          </div>
+          <div class="text-center mt-3 text-sm text-text-secondary">
+            <span id="current-slide">1</span> / <span id="total-slides"></span>
+          </div>
+        </div>
+        
+        <div class="flex-1">
+          <p id="modal-desc" class="text-text-secondary mb-4"></p>
+          <div id="modal-tags" class="flex flex-wrap gap-2 mb-4"></div>
+          <a id="modal-link" href="#" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-accent hover:bg-accent/80 text-white rounded-lg transition-all">
+            Перейти к проекту →
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <Footer />
+</Layout>
+
+<script>
+  let currentProject = null;
+  let currentSlideIndex = 0;
+  
+  const modal = document.getElementById('modal');
+  const modalTitle = document.getElementById('modal-title');
+  const modalDesc = document.getElementById('modal-desc');
+  const modalTags = document.getElementById('modal-tags');
+  const modalLink = document.getElementById('modal-link');
+  const modalImage = document.getElementById('modal-image');
+  const totalSlidesEl = document.getElementById('total-slides');
+  const currentSlideEl = document.getElementById('current-slide');
+  const prevBtn = document.getElementById('prev-slide');
+  const nextBtn = document.getElementById('next-slide');
+
+  function updateSlide() {
+    if (!modalImage || !currentProject || !currentSlideEl) return;
+    modalImage.src = currentProject.screenshots[currentSlideIndex];
+    currentSlideEl.textContent = (currentSlideIndex + 1).toString();
+  }
+
+  function openModal(project) {
+    currentProject = project;
+    currentSlideIndex = 0;
+    
+    if (modalTitle) modalTitle.textContent = project.title;
+    if (modalDesc) modalDesc.textContent = project.fullDesc;
+    if (totalSlidesEl) totalSlidesEl.textContent = project.screenshots.length.toString();
+    if (currentSlideEl) currentSlideEl.textContent = '1';
+    if (modalLink) {
+      modalLink.href = project.link;
+      modalLink.style.display = project.link && project.link !== "#" ? 'inline-flex' : 'none';
+    }
+
+    if (modalTags) {
+      modalTags.innerHTML = project.tags.map((tag) => 
         `<span class="px-3 py-1 bg-accent/10 text-accent rounded-lg text-[10px] font-bold border border-accent/20 uppercase">${tag}</span>`
       ).join('');
-
-      updateSlide();
-      modal?.classList.remove('opacity-0', 'pointer-events-none');
-      document.body.style.overflow = 'hidden';
     }
 
-    function closeModal() {
-      modal?.classList.add('opacity-0', 'pointer-events-none');
-      document.body.style.overflow = '';
+    updateSlide();
+    if (modal) {
+      modal.classList.remove('opacity-0', 'pointer-events-none');
     }
+    document.body.style.overflow = 'hidden';
+  }
 
-    prevBtn?.addEventListener('click', (e) => {
+  function closeModal() {
+    if (modal) {
+      modal.classList.add('opacity-0', 'pointer-events-none');
+    }
+    document.body.style.overflow = '';
+  }
+
+  // Обработчики событий
+  if (prevBtn) {
+    prevBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      currentSlideIndex = (currentSlideIndex - 1 + currentProject.screenshots.length) % currentProject.screenshots.length;
-      updateSlide();
+      if (currentProject) {
+        currentSlideIndex = (currentSlideIndex - 1 + currentProject.screenshots.length) % currentProject.screenshots.length;
+        updateSlide();
+      }
     });
+  }
 
-    nextBtn?.addEventListener('click', (e) => {
+  if (nextBtn) {
+    nextBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      currentSlideIndex = (currentSlideIndex + 1) % currentProject.screenshots.length;
-      updateSlide();
+      if (currentProject) {
+        currentSlideIndex = (currentSlideIndex + 1) % currentProject.screenshots.length;
+        updateSlide();
+      }
     });
+  }
 
-    document.querySelectorAll('.open-modal').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const project = JSON.parse(btn.getAttribute('data-project') || '{}');
+  // Кнопки открытия модального окна
+  document.querySelectorAll('.open-modal').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const projectData = btn.getAttribute('data-project');
+      if (projectData) {
+        const project = JSON.parse(projectData);
         openModal(project);
-      });
+      }
     });
+  });
 
-    document.querySelectorAll('.modal-close').forEach(btn => {
-      btn.addEventListener('click', closeModal);
+  // Кнопки закрытия
+  document.querySelectorAll('.modal-close').forEach(btn => {
+    btn.addEventListener('click', closeModal);
+  });
+
+  // Закрытие по клику на фон
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
     });
+  }
 
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeModal();
-      if (e.key === 'ArrowLeft' && !modal?.classList.contains('opacity-0')) prevBtn?.click();
-      if (e.key === 'ArrowRight' && !modal?.classList.contains('opacity-0')) nextBtn?.click();
-    });
-  </script>
-
-  <Footer />
-</Layout>
-  <Footer />
-</Layout>
+  // Клавиатура
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+    if (e.key === 'ArrowLeft' && modal && !modal.classList.contains('opacity-0')) {
+      e.preventDefault();
+      if (prevBtn) prevBtn.click();
+    }
+    if (e.key === 'ArrowRight' && modal && !modal.classList.contains('opacity-0')) {
+      e.preventDefault();
+      if (nextBtn) nextBtn.click();
+    }
+  });
+</script>
