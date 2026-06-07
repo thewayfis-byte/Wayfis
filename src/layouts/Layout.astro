@@ -9,9 +9,11 @@ interface Props {
 
 const { title, description } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://wayfis.ru');
+
 const defaultDescription = lang === 'ru'
-	? 'Wayfis — разработка сайтов, Telegram-ботов и цифровых экосистем.'
-	: 'Wayfis — web development, Telegram bots, and digital ecosystems.';
+	? 'Wayfis — профессиональная разработка сайтов, Telegram-ботов и сложных цифровых экосистем. Создаем быстрые и красивые решения для вашего бизнеса.'
+	: 'Wayfis — professional web development, Telegram bots, and complex digital ecosystems. We create fast and beautiful solutions for your business.';
 const metaDescription = description ?? defaultDescription;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
@@ -20,14 +22,45 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 <html lang={lang}>
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content={metaDescription} />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="theme-color" content="#030303" />
-		<meta property="og:title" content={title} />		<meta property="og:description" content={metaDescription} />
-		<meta property="og:type" content="website" />
 		<link rel="icon" type="image/png" href={logo.src} />
-		<meta name="generator" content={Astro.generator} />		<title>{title}</title>	</head>
-	<body class="bg-dark text-white font-sans selection:bg-accent selection:text-white min-h-screen relative overflow-x-hidden">
+		<meta name="generator" content={Astro.generator} />
+
+		<!-- Primary Meta Tags -->
+		<title>{title}</title>
+		<meta name="title" content={title} />
+		<meta name="description" content={metaDescription} />
+		<link rel="canonical" href={canonicalURL} />
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={metaDescription} />
+		<meta property="og:image" content={new URL(logo.src, canonicalURL)} />
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content={canonicalURL} />
+		<meta property="twitter:title" content={title} />
+		<meta property="twitter:description" content={metaDescription} />
+		<meta property="twitter:image" content={new URL(logo.src, canonicalURL)} />
+
+		<meta name="theme-color" content="#030303" />
+		
+		<!-- JSON-LD -->
+		<script type="application/ld+json" is:inline set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "Organization",
+			"name": "Wayfis",
+			"url": "https://wayfis.ru",
+			"logo": "https://wayfis.ru/logo.png",
+			"description": defaultDescription,
+			"sameAs": [
+				"https://t.me/wayfis"
+			]
+		})} />
+	</head>	<body class="bg-dark text-white font-sans selection:bg-accent selection:text-white min-h-screen relative overflow-x-hidden">
 		<canvas id="particles" class="fixed inset-0 -z-5 pointer-events-none opacity-40"></canvas>
 
 		<div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
