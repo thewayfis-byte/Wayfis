@@ -1,0 +1,58 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { getLangFromUrl } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const productName = Astro.url.searchParams.get('product') || (lang === 'ru' ? 'Товар' : 'Product');
+---
+
+<Layout title={`${lang === 'ru' ? 'Заказ' : 'Order'} | Wayfis`}>
+  <Header />
+  <main class="pt-32 pb-20 min-h-screen flex items-center justify-center px-6">
+    <div class="bg-card border border-white/10 rounded-[2.5rem] p-8 md:p-12 max-w-lg w-full relative shadow-2xl flex flex-col items-center text-center">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-accent/10 text-accent mb-6">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+      </div>
+      
+      <h1 class="text-2xl md:text-4xl font-bold mb-2 text-white">{productName}</h1>
+      <p class="text-textMuted mb-10 font-mono text-sm">
+        {lang === 'ru' ? '// Выберите удобный способ связи для оформления заказа' : '// Choose a convenient contact method to place your order'}
+      </p>
+      
+      <div class="grid gap-4 w-full">
+        <a href="https://t.me/wayf1s" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-6 bg-white/5 hover:bg-accent/10 border border-white/10 hover:border-accent/30 rounded-2xl transition-all group">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-[#229ED9]/10 flex items-center justify-center text-[#229ED9]">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.462 8.281l-1.56 7.592c-.117.554-.454.678-.914.419l-2.384-1.755-1.151 1.112c-.125.124-.231.231-.474.231l.171-2.425 4.412-3.986c.192-.171-.041-.266-.297-.095l-5.453 3.434-2.35-.736c-.511-.154-.522-.511.107-.757l9.178-3.537c.425-.154.797.101.651.737z"/></svg>
+            </div>
+            <span class="font-bold text-lg text-white">Telegram</span>
+          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-textMuted group-hover:text-accent transition-colors"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+        
+        <a href="https://vk.com/qwayfis" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-6 bg-white/5 hover:bg-accent/10 border border-white/10 hover:border-accent/30 rounded-2xl transition-all group">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-[#0077FF]/10 flex items-center justify-center text-[#0077FF]">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M13.162 18.994c.609 0 .858-.406.851-.915-.013-.95-.013-1.9 0-2.85.013-.535.258-.75.777-.606.231.065.44.209.648.339.703.448 1.407.896 2.11 1.342.412.264.842.456 1.331.49.044.003.088.003.132.003h1.32c.796 0 .974-.322.656-.933-.178-.343-.37-.659-.606-.955-.467-.581-.935-1.162-1.403-1.743-.245-.304-.226-.521.073-.783.594-.521 1.208-1.022 1.777-1.57.794-.766 1.271-1.67 1.307-2.804.014-.43-.11-.73-.522-.835-.135-.034-.277-.053-.419-.053h-1.73c-.445 0-.769.138-.926.58-.359 1.012-.892 1.916-1.575 2.744-.14.174-.287.341-.438.501-.273.29-.5.272-.694-.011-.149-.217-.242-.465-.263-.724-.047-.676-.047-1.353 0-2.03.015-.213 0-.434-.084-.633-.17-.401-.547-.579-1.016-.606-.762-.044-1.525-.044-2.287 0-.463.027-.714.273-.853.713-.076.239-.047.47.204.644.279.193.558.386.837.58.367.255.485.546.485.993.014.718.014 1.436 0 2.154 0 .156-.045.311-.132.446-.144.23-.334.282-.521.151-.585-.407-1.103-.893-1.557-1.465-.803-1.015-1.341-2.158-1.82-3.335-.166-.408-.46-.623-.93-.623H3.198c-.85 0-1.016.328-.657 1.029.19.37.4.731.633 1.076 1.1 1.632 2.346 3.141 3.797 4.453 1.499 1.359 3.189 2.388 5.04 3.074.354.131.732.196 1.112.196h.042z"/></svg>
+            </div>
+            <span class="font-bold text-lg text-white">ВКонтакте</span>
+          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-textMuted group-hover:text-accent transition-colors"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+      </div>
+      
+      <div class="mt-12">
+        <a href="catalog" class="text-textMuted hover:text-white transition-colors text-sm font-mono">
+          {lang === 'ru' ? '< Назад в каталог' : '< Back to catalog'}
+        </a>
+      </div>
+      
+      <p class="mt-8 text-[10px] text-textMuted uppercase tracking-widest font-bold">
+        {lang === 'ru' ? 'Отвечаем в течение нескольких часов' : 'We reply within a few hours'}
+      </p>
+    </div>
+  </main>
+  <Footer />
+</Layout>

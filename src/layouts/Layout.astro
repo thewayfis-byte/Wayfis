@@ -64,9 +64,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 						this.size = Math.random() * 2 + 0.1;
 						this.speedX = Math.random() * 1 - 0.5;
 						this.speedY = Math.random() * 1 - 0.5;
-						this.color = 'rgba(59, 130, 246, 0.3)';
-					}
-					update() {
+						this.color = 'rgba(128, 0, 32, 0.3)';
+					}					update() {
 						this.x += this.speedX;
 						this.y += this.speedY;
 
@@ -183,9 +182,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 <style is:global>
 	:root {
-		--accent: 59, 130, 246;
+		--accent: 128, 0, 32;
 	}
-
 	html {
 		scroll-behavior: smooth;
 		background-color: #030303;
@@ -259,9 +257,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 	.card-hover-lift:hover {
 		transform: translateY(-4px);
-		box-shadow: 0 20px 40px -12px rgba(59, 130, 246, 0.15);
+		box-shadow: 0 20px 40px -12px rgba(128, 0, 32, 0.15);
 	}
-
 	@media (prefers-reduced-motion: reduce) {
 		.reveal {
 			opacity: 1;
