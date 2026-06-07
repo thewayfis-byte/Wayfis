@@ -8,8 +8,8 @@ import { getLangFromUrl } from '../../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const prefix = lang === 'ru' ? base : `${base}/en`;
 ---
-
 <Layout 
 	title="Wayfis | Professional Web & Telegram Bot Development"
 	description="Order a website, Telegram bot, or complex digital ecosystem from Wayfis. High quality, modern technologies, and 24/7 support.">
