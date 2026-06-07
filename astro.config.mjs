@@ -7,14 +7,5 @@ export default defineConfig({
   base: '/',
   integrations: [
     tailwind(),
-    sitemap({
-      i18n: {
-        defaultLocale: 'ru',
-        locales: {
-          ru: 'ru',
-          en: 'en',
-        },
-      },
-    }),
   ],
 });
