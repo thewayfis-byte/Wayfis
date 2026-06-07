@@ -8,8 +8,8 @@ export const defaultLang = 'ru';
 export const ui = {
   ru: {
     'nav.portfolio': 'Портфолио',
-    'nav.reviews': 'Отзывы',
-    'nav.about': 'Обо мне',
+    'nav.catalog': 'Каталог',
+    'nav.reviews': 'Отзывы',    'nav.about': 'Обо мне',
     'hero.title': 'Создаю цифровые решения',
     'about.title': 'Обо мне',
     'about.text': 'Я - независимый разработчик, увлеченный созданием безупречных цифровых продуктов. Мой подход исключает компромиссы между красотой и производительностью.',
@@ -20,8 +20,8 @@ export const ui = {
   },
   en: {
     'nav.portfolio': 'Portfolio',
-    'nav.reviews': 'Reviews',
-    'nav.about': 'About',
+    'nav.catalog': 'Catalog',
+    'nav.reviews': 'Reviews',    'nav.about': 'About',
     'hero.title': 'Building digital solutions',
     'about.title': 'About me',
     'about.text': 'I am an independent developer passionate about creating flawless digital products. My approach eliminates compromises between beauty and performance.',
