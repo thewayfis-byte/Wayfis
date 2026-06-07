@@ -13,13 +13,12 @@ const enPath = getLocalizedPath(Astro.url, 'en');
   <div class="max-w-6xl mx-auto px-6">
     <div class="bg-dark/60 backdrop-blur-xl border border-white/10 rounded-2xl h-16 flex items-center justify-between px-6 pointer-events-auto shadow-2xl animate-header-in">
       <a href={`${prefix}/`} class="flex items-center gap-3 group">
-        <div class="w-10 h-10 flex items-center justify-center overflow-hidden rounded-xl bg-white/5 border border-white/10 group-hover:border-accent/50 transition-all p-1 relative">
-          <img src={logo.src} alt="Wayfis Logo" class="w-full h-full object-contain relative z-10" />
+        <div class="w-12 h-12 flex items-center justify-center overflow-hidden rounded-xl bg-white/5 border border-white/10 group-hover:border-accent/50 transition-all p-1 relative">
+          <img src={logo.src} alt="Wayfis Logo" class="w-full h-full object-contain relative z-10 scale-110" />
           <div class="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity bg-accent blur-md"></div>
         </div>
-        <span class="text-xl font-bold tracking-tight">Wayfis</span>
+        <span class="text-2xl font-bold tracking-tight">Wayfis</span>
       </a>
-
       <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-textMuted">
         <a href={`${prefix}/`} class="hover:text-white transition-colors relative group">
           {lang === 'ru' ? 'Главная' : 'Home'}
