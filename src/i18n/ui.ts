@@ -9,8 +9,9 @@ export const ui = {
   ru: {
     'nav.portfolio': 'Портфолио',
     'nav.catalog': 'Каталог',
-    'nav.reviews': 'Отзывы',    'nav.about': 'Обо мне',
-    'hero.title': 'Создаю цифровые решения',
+    'nav.blog': 'Блог',
+    'nav.reviews': 'Отзывы',
+    'nav.about': 'Обо мне',    'hero.title': 'Создаю цифровые решения',
     'about.title': 'Обо мне',
     'about.text': 'Я - независимый разработчик, увлеченный созданием безупречных цифровых продуктов. Мой подход исключает компромиссы между красотой и производительностью.',
     'about.support': 'Support.init()',
@@ -21,8 +22,9 @@ export const ui = {
   en: {
     'nav.portfolio': 'Portfolio',
     'nav.catalog': 'Catalog',
-    'nav.reviews': 'Reviews',    'nav.about': 'About',
-    'hero.title': 'Building digital solutions',
+    'nav.blog': 'Blog',
+    'nav.reviews': 'Reviews',
+    'nav.about': 'About',    'hero.title': 'Building digital solutions',
     'about.title': 'About me',
     'about.text': 'I am an independent developer passionate about creating flawless digital products. My approach eliminates compromises between beauty and performance.',
     'about.support': 'Support.init()',

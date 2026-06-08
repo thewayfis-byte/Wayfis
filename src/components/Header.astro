@@ -32,8 +32,11 @@ const enPath = getLocalizedPath(Astro.url, 'en');
           {t('nav.catalog')}
           <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all group-hover:w-full"></span>
         </a>
-        <a href={`${prefix}/reviews`} class="hover:text-white transition-colors relative group">          {t('nav.reviews')}
+        <a href="/blog" class="hover:text-white transition-colors relative group">
+          {t('nav.blog')}
           <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all group-hover:w-full"></span>
+        </a>
+        <a href={`${prefix}/reviews`} class="hover:text-white transition-colors relative group">          {t('nav.reviews')}          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all group-hover:w-full"></span>
         </a>
       </nav>
 
@@ -64,9 +67,11 @@ const enPath = getLocalizedPath(Astro.url, 'en');
     <a href={`${prefix}/catalog`} class="text-2xl font-bold hover:text-accent transition-colors">
       {t('nav.catalog')}
     </a>
+    <a href="/blog" class="text-2xl font-bold hover:text-accent transition-colors">
+      {t('nav.blog')}
+    </a>
     <a href={`${prefix}/reviews`} class="text-2xl font-bold hover:text-accent transition-colors">      {t('nav.reviews')}
     </a>
-
     <div class="flex bg-white/5 rounded-full p-1 border border-white/10 mt-4">
       <a href={ruPath} class={`px-6 py-2 rounded-full text-sm font-bold transition-all ${lang === 'ru' ? 'bg-accent text-white' : 'text-textMuted'}`}>RU</a>
       <a href={enPath} class={`px-6 py-2 rounded-full text-sm font-bold transition-all ${lang === 'en' ? 'bg-accent text-white' : 'text-textMuted'}`}>EN</a>
