@@ -1,0 +1,53 @@
+<%- include('layout', { active: 'servers', title: 'Категории' }) %>
+
+<div class="page-header">
+  <h1>Категории</h1>
+  <a href="/admin/categories/create" class="btn btn-primary">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></svg>
+    Добавить
+  </a>
+</div>
+
+<div class="card">
+  <div class="table-wrap"><table>
+    <thead>
+      <tr>
+        <th>Название</th>
+        <th>Порядок</th>
+        <th>Статус</th>
+        <th>Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (categories.length === 0) { %>
+      <tr><td colspan="4" class="empty"><p>Нет категорий.</p></td></tr>
+      <% } else { %>
+      <% categories.forEach(function(c) { %>
+      <tr>
+        <td style="font-weight:600;color:#fff"><%= c.name %></td>
+        <td style="color:rgba(255,255,255,0.5)"><%= c.sort_order %></td>
+        <td>
+          <% if (c.visible) { %>
+          <span class="badge badge-green">Активна</span>
+          <% } else { %>
+          <span class="badge badge-gray">Скрыта</span>
+          <% } %>
+        </td>
+        <td>
+          <div class="actions">
+            <a href="/admin/categories/edit/<%= c.id %>" class="btn btn-ghost btn-sm">Ред.</a>
+            <form method="POST" action="/admin/categories/delete/<%= c.id %>" style="display:inline" onsubmit="return confirm('Удалить?')">
+              <button type="submit" class="btn btn-danger btn-sm">Удал.</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      <% }); %>
+      <% } %>
+    </tbody>
+  </table></div>
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<%- include('layout', { active: 'servers', title: 'Серверы' }) %>
+
+<div class="page-header">
+  <h1>Серверы</h1>
+  <a href="/admin/settings" class="btn btn-primary">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+    Настройки сервера
+  </a>
+</div>
+
+<div class="card" style="margin-bottom:20px">
+  <div class="card-header">
+    <h3>Основная информация</h3>
+  </div>
+  <div class="card-body">
+    <form method="POST" action="/admin/settings">
+      <div class="form-row">
+        <div class="form-group">
+          <label>IP сервера</label>
+          <input type="text" name="server_ip" value="<%= settings.server_ip || '' %>">
+        </div>
+        <div class="form-group">
+          <label>Режим</label>
+          <input type="text" name="server_mode" value="<%= settings.server_mode || '' %>">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Версия (от)</label>
+          <input type="text" name="server_version_from" value="<%= settings.server_version_from || '' %>">
+        </div>
+        <div class="form-group">
+          <label>Версия (до)</label>
+          <input type="text" name="server_version_to" value="<%= settings.server_version_to || '' %>">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Макс. онлайн</label>
+        <input type="number" name="online_max" value="<%= settings.online_max || '20' %>">
+      </div>
+      <button type="submit" class="btn btn-primary" style="margin-top:8px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        Сохранить
+      </button>
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h3>Категории серверов</h3>
+    <a href="/admin/categories/create" class="btn btn-primary btn-sm">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></svg>
+      Добавить
+    </a>
+  </div>
+  <div class="table-wrap"><table>
+    <thead>
+      <tr>
+        <th>Название</th>
+        <th>Товаров</th>
+        <th>Порядок</th>
+        <th>Видимость</th>
+        <th>Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (categories.length === 0) { %>
+        <tr><td colspan="5" class="empty">Категории пока не созданы</td></tr>
+      <% } else { %>
+        <% categories.forEach(cat => { %>
+          <tr>
+            <td><strong><%= cat.name %></strong></td>
+            <td><%= cat.product_count %></td>
+            <td><%= cat.sort_order %></td>
+            <td><span class="badge <%= cat.visible ? 'badge-green' : 'badge-gray' %>"><%= cat.visible ? 'Да' : 'Нет' %></span></td>
+            <td class="actions">
+              <a href="/admin/categories/edit/<%= cat.id %>" class="btn btn-ghost btn-sm">Ред.</a>
+              <form method="POST" action="/admin/categories/delete/<%= cat.id %>" style="display:inline" onsubmit="return confirm('Удалить категорию?')">
+                <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      <% } %>
+    </tbody>
+  </table></div>
+</div>
+
+</div>
+</body>
+</html>

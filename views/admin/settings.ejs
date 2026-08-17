@@ -1,0 +1,102 @@
+<%- include('layout', { active: 'settings', title: 'Настройки' }) %>
+
+<div class="page-header">
+  <h1>Настройки</h1>
+</div>
+
+<form method="POST" style="max-width:800px">
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-header"><h3>Основное</h3></div>
+    <div class="card-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Название магазина</label>
+          <input type="text" name="shop_name" value="<%= settings.shop_name || '' %>">
+        </div>
+        <div class="form-group">
+          <label>Описание (meta)</label>
+          <input type="text" name="shop_description" value="<%= settings.shop_description || '' %>">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Заголовок Hero</label>
+        <input type="text" name="hero_title" value="<%= settings.hero_title || '' %>">
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-header"><h3>Сервер</h3></div>
+    <div class="card-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>IP сервера</label>
+          <input type="text" name="server_ip" value="<%= settings.server_ip || '' %>">
+        </div>
+        <div class="form-group">
+          <label>Режим</label>
+          <input type="text" name="server_mode" value="<%= settings.server_mode || '' %>">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Версия (от)</label>
+          <input type="text" name="server_version_from" value="<%= settings.server_version_from || '' %>">
+        </div>
+        <div class="form-group">
+          <label>Версия (до)</label>
+          <input type="text" name="server_version_to" value="<%= settings.server_version_to || '' %>">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Макс. онлайн</label>
+        <input type="number" name="online_max" value="<%= settings.online_max || '20' %>">
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-header"><h3>Оформление</h3></div>
+    <div class="card-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Цвет акцента (hex)</label>
+          <input type="color" name="theme_accent" value="<%= settings.theme_accent || '#10B981' %>" style="height:44px;padding:4px">
+        </div>
+        <div class="form-group">
+          <label>Цвет фона (hex)</label>
+          <input type="color" name="theme_bg" value="<%= settings.theme_bg || '#0E0F10' %>" style="height:44px;padding:4px">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-header"><h3>Социальные сети</h3></div>
+    <div class="card-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Telegram URL</label>
+          <input type="text" name="telegram_url" value="<%= settings.telegram_url || '' %>">
+        </div>
+        <div class="form-group">
+          <label>YouTube URL</label>
+          <input type="text" name="youtube_url" value="<%= settings.youtube_url || '' %>">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Текст в футере</label>
+        <input type="text" name="footer_text" value="<%= settings.footer_text || '' %>">
+      </div>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary" style="margin-bottom:32px">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+    Сохранить
+  </button>
+</form>
+
+</div>
+</body>
+</html>

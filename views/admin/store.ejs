@@ -1,0 +1,45 @@
+<%- include('layout', { active: 'store', title: 'Витрина — FAQ' }) %>
+
+<div class="page-header">
+  <h1>Вопросы и ответы (FAQ)</h1>
+  <a href="/admin/faqs/create" class="btn btn-primary">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></svg>
+    Добавить FAQ
+  </a>
+</div>
+
+<div class="card">
+  <div class="table-wrap"><table>
+    <thead>
+      <tr>
+        <th>Вопрос</th>
+        <th>Ответ</th>
+        <th>Порядок</th>
+        <th>Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (faqs.length === 0) { %>
+        <tr><td colspan="4" class="empty">FAQ пока не созданы</td></tr>
+      <% } else { %>
+        <% faqs.forEach(faq => { %>
+          <tr>
+            <td><strong><%= faq.question %></strong></td>
+            <td style="max-width:400px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"><%= faq.answer %></td>
+            <td><%= faq.sort_order %></td>
+            <td class="actions">
+              <a href="/admin/faqs/edit/<%= faq.id %>" class="btn btn-ghost btn-sm">Ред.</a>
+              <form method="POST" action="/admin/faqs/delete/<%= faq.id %>" style="display:inline" onsubmit="return confirm('Удалить FAQ?')">
+                <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      <% } %>
+    </tbody>
+  </table></div>
+</div>
+
+</div>
+</body>
+</html>

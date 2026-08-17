@@ -1,0 +1,79 @@
+<%- include('layout', { active: 'finance', title: 'Заказ' }) %>
+
+<div class="page-header">
+  <h1>Заказ #<%= order.id.slice(0,8) %></h1>
+  <a href="/admin/finance" class="btn btn-outline">← Назад</a>
+</div>
+
+<div class="card" style="margin-bottom:20px">
+  <div class="card-header"><h3>Детали заказа</h3></div>
+  <div class="card-body">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:4px">ID заказа</div>
+        <div style="font-weight:600;color:#fff"><%= order.id %></div>
+      </div>
+      <div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:4px">Никнейм</div>
+        <div style="font-weight:600;color:#fff"><%= order.nickname %></div>
+      </div>
+      <div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:4px">Товар</div>
+        <div style="font-weight:600;color:#fff"><%= order.product_name || 'Не указан' %></div>
+      </div>
+      <div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:4px">Количество</div>
+        <div style="font-weight:600;color:#fff"><%= order.quantity || 1 %></div>
+      </div>
+      <div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:4px">Сумма</div>
+        <div style="font-size:24px;font-weight:800;color:#10B981"><%= order.amount %> ₽</div>
+      </div>
+      <div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:4px">Статус</div>
+        <span class="badge <%= order.status === 'completed' ? 'badge-green' : order.status === 'pending' ? 'badge-yellow' : 'badge-gray' %>">
+          <%= order.status === 'completed' ? 'Оплачен' : order.status === 'pending' ? 'Ожидает' : 'Отменён' %>
+        </span>
+      </div>
+      <div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:4px">Способ оплаты</div>
+        <div style="font-weight:600;color:#fff"><%= order.payment_method || 'Не указан' %></div>
+      </div>
+      <div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:4px">Промокод</div>
+        <div style="font-weight:600;color:#fff"><%= order.promo_code || '—' %></div>
+      </div>
+      <div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:4px">Дата</div>
+        <div style="font-weight:600;color:#fff"><%= new Date(order.created_at).toLocaleString('ru-RU') %></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% if (order.status === 'pending') { %>
+<div class="card" style="margin-bottom:20px">
+  <div class="card-header"><h3>Действия</h3></div>
+  <div class="card-body">
+    <button onclick="manualComplete('<%= order.id %>')" class="btn btn-primary">✅ Подтвердить оплату вручную и выдать</button>
+  </div>
+</div>
+<% } %>
+
+<script>
+function manualComplete(id) {
+  if (!confirm('Подтвердить оплату вручную? Товар будет выдан.')) return;
+  var btn = event.target; btn.disabled = true; btn.textContent = 'Обработка...';
+  fetch('/admin/orders/complete/' + id, { method: 'POST' })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.success) { location.reload(); }
+      else { alert('Ошибка: ' + (data.error || 'Неизвестная ошибка')); btn.disabled = false; btn.textContent = '✅ Подтвердить оплату вручную и выдать'; }
+    })
+    .catch(function() { alert('Ошибка сервера'); btn.disabled = false; btn.textContent = '✅ Подтвердить оплату вручную и выдать'; });
+}
+</script>
+
+</div>
+</body>
+</html>

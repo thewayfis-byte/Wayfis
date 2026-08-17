@@ -1,0 +1,127 @@
+<%- include('layout', { active: 'finance', title: 'Финансы' }) %>
+
+<div class="page-header">
+  <h1>Финансы</h1>
+</div>
+
+<div class="stat-cards" style="margin-bottom:24px;grid-template-columns:repeat(4,1fr)">
+  <div class="stat-card">
+    <div class="label">За сегодня</div>
+    <div class="value" style="font-size:28px"><%= todayRevenue.toLocaleString('ru-RU') %> ₽</div>
+    <div class="hint"><%= todayOrders %> заказов</div>
+  </div>
+  <div class="stat-card" style="background:linear-gradient(135deg,#2563EB,#1D4ED8)">
+    <div class="label">За неделю</div>
+    <div class="value" style="font-size:28px"><%= weekRevenue.toLocaleString('ru-RU') %> ₽</div>
+    <div class="hint"><%= weekOrders %> заказов</div>
+  </div>
+  <div class="stat-card" style="background:linear-gradient(135deg,#8B5CF6,#7C3AED)">
+    <div class="label">За месяц</div>
+    <div class="value" style="font-size:28px"><%= monthRevenue.toLocaleString('ru-RU') %> ₽</div>
+    <div class="hint"><%= monthOrders %> заказов</div>
+  </div>
+  <div class="stat-card" style="background:linear-gradient(135deg,#F59E0B,#D97706)">
+    <div class="label">Всего</div>
+    <div class="value" style="font-size:28px"><%= totalRevenue.toLocaleString('ru-RU') %> ₽</div>
+    <div class="hint"><%= totalOrders %> заказов</div>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
+  <div class="card">
+    <div class="card-header"><h3>Средний чек</h3></div>
+    <div class="card-body">
+      <div style="font-size:36px;font-weight:800;color:#fff"><%= avgOrder.toLocaleString('ru-RU') %> ₽</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.4);margin-top:4px">на основе <%= totalOrders %> заказов</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><h3>Способы оплаты</h3></div>
+    <div class="card-body">
+      <% if (byMethod && byMethod.length > 0) { %>
+        <% byMethod.forEach(m => { %>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04)">
+            <span style="font-size:14px;color:rgba(255,255,255,0.6)"><%= m.payment_method || 'Не указан' %></span>
+            <span style="font-size:14px;font-weight:700;color:#fff"><%= m.revenue.toLocaleString('ru-RU') %> ₽ (<%= m.count %>)</span>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <div style="text-align:center;padding:16px;color:rgba(255,255,255,0.35);font-size:13px">Нет данных</div>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h3>История платежей</h3>
+    <div style="display:flex;gap:8px;align-items:center">
+      <form method="GET" style="display:flex;gap:8px;align-items:center">
+        <input type="text" name="search" value="<%= search %>" placeholder="Поиск по нику" style="padding:6px 12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:#fff;font-size:13px;font-family:inherit;outline:none;width:180px">
+        <button type="submit" class="btn btn-ghost btn-sm">🔍</button>
+      </form>
+    </div>
+  </div>
+  <div class="table-wrap"><table>
+    <thead>
+      <tr>
+        <th>Никнейм</th>
+        <th>Товар</th>
+        <th>Сумма</th>
+        <th>Способ</th>
+        <th>Статус</th>
+        <th>Дата</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (orders.length === 0) { %>
+        <tr><td colspan="7" class="empty">Платежи появятся после первых покупок</td></tr>
+      <% } else { %>
+        <% orders.forEach(function(order) { %>
+          <tr>
+            <td><strong><%= order.nickname %></strong></td>
+            <td style="font-size:12px;color:rgba(255,255,255,0.5)"><%= order.product_name || '—' %></td>
+            <td><%= order.amount.toLocaleString('ru-RU') %> ₽</td>
+            <td><%= order.payment_method || '—' %></td>
+            <td>
+              <span class="badge <%= order.status === 'completed' ? 'badge-green' : order.status === 'pending' ? 'badge-yellow' : 'badge-gray' %>">
+                <%= order.status === 'completed' ? 'Оплачен' : order.status === 'pending' ? 'Ожидает' : 'Отменён' %>
+              </span>
+            </td>
+            <td style="font-size:12px;color:rgba(255,255,255,0.4)"><%= new Date(order.created_at).toLocaleString('ru-RU') %></td>
+            <td>
+              <div class="actions">
+                <a href="/admin/orders/<%= order.id %>" class="btn btn-ghost btn-sm">👁</a>
+                <% if (order.status === 'pending') { %>
+                  <button onclick="completeOrder('<%= order.id %>')" class="btn btn-ghost btn-sm" style="color:#10B981">✅</button>
+                <% } %>
+              </div>
+            </td>
+          </tr>
+        <% }) %>
+      <% } %>
+    </tbody>
+  </table></div>
+  <% if (totalPages > 1) { %>
+    <div style="display:flex;gap:8px;justify-content:center;padding:16px">
+      <% for (var i = 1; i <= totalPages; i++) { %>
+        <a href="?search=<%= encodeURIComponent(search) %>&page=<%= i %>" class="btn <%= i === page ? 'btn-primary' : 'btn-ghost' %> btn-sm" style="min-width:36px"><%= i %></a>
+      <% } %>
+    </div>
+  <% } %>
+</div>
+
+<script>
+function completeOrder(id) {
+  if (!confirm('Подтвердить оплату и выдать товар?')) return;
+  fetch('/admin/orders/complete/' + id, { method: 'POST' })
+    .then(function(r) { return r.json(); })
+    .then(function(d) { if (d.success) location.reload(); else alert('Ошибка: ' + d.error); })
+    .catch(function() { alert('Ошибка сервера'); });
+}
+</script>
+
+</div>
+</body>
+</html>

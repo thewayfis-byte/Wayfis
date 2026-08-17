@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Админ-панель — Wayfis</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0E1A12; color: #fff; display: flex; align-items: center;
+      justify-content: center; min-height: 100vh;
+    }
+    .login-box {
+      background: #162B1E; border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px; padding: 40px; width: 360px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    h1 { font-size: 22px; margin-bottom: 24px; text-align: center; }
+    label { display: block; font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+    input {
+      width: 100%; padding: 12px 14px; border-radius: 10px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      color: #fff; font-size: 14px; margin-bottom: 16px; outline: none;
+    }
+    input:focus { border-color: #10B981; }
+    button {
+      width: 100%; padding: 12px; border-radius: 10px;
+      background: linear-gradient(45deg, #10B981, #10B981CC); border: none;
+      color: #fff; font-size: 14px; font-weight: 700; cursor: pointer;
+    }
+    button:hover { filter: brightness(1.1); }
+    .error { color: #ef4444; font-size: 13px; text-align: center; margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h1>Админ-панель</h1>
+    <% if (error) { %><div class="error"><%= error %></div><% } %>
+    <form method="POST">
+      <label>Логин</label>
+      <input type="text" name="username" required>
+      <label>Пароль</label>
+      <input type="password" name="password" required>
+      <button type="submit">Войти</button>
+    </form>
+  </div>
+</body>
+</html>

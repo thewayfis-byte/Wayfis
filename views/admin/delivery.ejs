@@ -1,0 +1,158 @@
+<%- include('layout', { active: 'delivery', title: 'Выдача' }) %>
+
+<div class="page-header">
+  <h1>Выдача</h1>
+  <div id="status-badge" class="ds-status ds-loading">Проверка...</div>
+</div>
+
+<form method="POST" style="max-width:640px">
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-header"><h3>Способ выдачи</h3></div>
+    <div class="card-body" style="padding:24px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+        <label class="dm-option <%= settings.delivery_method === 'rcon' || !settings.delivery_method ? 'active' : '' %>">
+          <input type="radio" name="delivery_method" value="rcon" <%= settings.delivery_method === 'rcon' || !settings.delivery_method ? 'checked' : '' %> onchange="toggleMethod(this);checkStatus()">
+          <div class="dm-card">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" y1="17" y2="21"/></svg>
+            <div class="dm-title">RCON</div>
+            <div class="dm-desc">Подключение напрямую к серверу Minecraft. Плагин не требуется.</div>
+          </div>
+        </label>
+        <label class="dm-option <%= settings.delivery_method === 'plugin' ? 'active' : '' %>">
+          <input type="radio" name="delivery_method" value="plugin" <%= settings.delivery_method === 'plugin' ? 'checked' : '' %> onchange="toggleMethod(this);checkStatus()">
+          <div class="dm-card">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="1.5"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m8 17 4 4 4-4"/></svg>
+            <div class="dm-title">Плагин</div>
+            <div class="dm-desc">Установи плагин WayfisDelivery.jar на сервер. Команды приходят через HTTP.</div>
+          </div>
+        </label>
+      </div>
+
+      <div id="rcon-settings" style="<%= settings.delivery_method === 'plugin' ? 'display:none' : '' %>">
+        <h4 style="font-size:13px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:14px">Настройки RCON</h4>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Хост</label>
+            <input type="text" name="delivery_rcon_host" value="<%= settings.delivery_rcon_host || 'localhost' %>" placeholder="localhost" onchange="checkStatus()">
+          </div>
+          <div class="form-group">
+            <label>Порт</label>
+            <input type="number" name="delivery_rcon_port" value="<%= settings.delivery_rcon_port || '25575' %>" placeholder="25575" onchange="checkStatus()">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Пароль RCON</label>
+          <input type="password" name="delivery_rcon_password" value="<%= settings.delivery_rcon_password || '' %>" placeholder="Пароль из server.properties" onchange="checkStatus()">
+        </div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.35);margin-top:8px">Пароль должен совпадать с <code style="color:#eab308">rcon.password</code> в <code style="color:#eab308">server.properties</code>.</div>
+      </div>
+
+      <div id="plugin-settings" style="<%= settings.delivery_method !== 'plugin' ? 'display:none' : '' %>">
+        <h4 style="font-size:13px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:14px">Настройки плагина</h4>
+        <div class="form-group">
+          <label>URL плагина</label>
+          <input type="text" name="delivery_plugin_url" value="<%= settings.delivery_plugin_url || 'http://localhost:19132' %>" placeholder="http://localhost:19132" onchange="checkStatus()">
+        </div>
+        <div class="form-group">
+          <label>API-ключ</label>
+          <input type="text" name="delivery_plugin_key" value="<%= settings.delivery_plugin_key || '' %>" placeholder="Ключ из config.yml плагина">
+        </div>
+        <button type="button" class="btn btn-primary btn-sm" onclick="testPlugin()" id="test-plugin-btn">Тест плагина</button>
+        <div id="test-result" style="margin-top:12px;display:none"></div>
+      </div>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
+
+<style>
+.dm-option{cursor:pointer}
+.dm-option input{display:none}
+.dm-card{height:100%;padding:20px;border-radius:14px;background:rgba(255,255,255,0.02);border:2px solid rgba(255,255,255,0.08);transition:all .15s;display:flex;flex-direction:column;gap:12px}
+.dm-option.active .dm-card{border-color:var(--accent);background:rgba(var(--accent-rgb),0.05)}
+.dm-title{font-size:16px;font-weight:800;color:#fff}
+.dm-desc{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5;flex:1}
+.ds-status{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:999px;font-size:13px;font-weight:700;transition:all .3s}
+.ds-connected{background:rgba(var(--accent-rgb),0.12);color:var(--accent);border:1px solid rgba(var(--accent-rgb),0.25)}
+.ds-disconnected{background:rgba(239,68,68,0.1);color:#ef4444;border:1px solid rgba(239,68,68,0.2)}
+.ds-loading{background:rgba(234,179,8,0.1);color:#eab308;border:1px solid rgba(234,179,8,0.2)}
+.ds-status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ds-connected .ds-status-dot{background:var(--accent);box-shadow:0 0 8px rgba(var(--accent-rgb),0.5)}
+.ds-disconnected .ds-status-dot{background:#ef4444;box-shadow:0 0 8px rgba(239,68,68,0.5)}
+.ds-loading .ds-status-dot{background:#eab308;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+</style>
+
+<script>
+function toggleMethod(el) {
+  document.querySelectorAll('.dm-option').forEach(function(o){ o.classList.remove('active'); });
+  el.closest('.dm-option').classList.add('active');
+  var isPlugin = el.value === 'plugin';
+  document.getElementById('rcon-settings').style.display = isPlugin ? 'none' : '';
+  document.getElementById('plugin-settings').style.display = isPlugin ? '' : 'none';
+}
+
+function checkStatus() {
+  var badge = document.getElementById('status-badge');
+  badge.className = 'ds-status ds-loading';
+  badge.innerHTML = '<span class="ds-status-dot"></span> Проверка...';
+
+  fetch('/admin/delivery/status')
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (data.connected) {
+        badge.className = 'ds-status ds-connected';
+        badge.innerHTML = '<span class="ds-status-dot"></span> Подключено';
+      } else {
+        badge.className = 'ds-status ds-disconnected';
+        badge.innerHTML = '<span class="ds-status-dot"></span> Не подключено';
+      }
+    })
+    .catch(function(){
+      badge.className = 'ds-status ds-disconnected';
+      badge.innerHTML = '<span class="ds-status-dot"></span> Ошибка проверки';
+    });
+}
+
+function testPlugin() {
+  var btn = document.getElementById('test-plugin-btn');
+  var result = document.getElementById('test-result');
+  btn.disabled = true;
+  btn.textContent = 'Тестируем...';
+  result.style.display = 'none';
+
+  var url = document.querySelector('input[name="delivery_plugin_url"]').value || 'http://localhost:19132';
+  var key = document.querySelector('input[name="delivery_plugin_key"]').value || '';
+
+  fetch('/admin/delivery/test', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ url: url, key: key })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data){
+    if (data.success) {
+      result.innerHTML = '<span style="color:var(--accent);font-weight:700">&#10003; Плагин работает</span><br><span style="font-size:12px;color:rgba(255,255,255,0.5)">Выполнено команд: ' + (data.executed || 0) + '</span>';
+    } else {
+      result.innerHTML = '<span style="color:#ef4444;font-weight:700">&#10007; Ошибка: ' + (data.error || 'Неизвестная ошибка') + '</span>';
+    }
+    result.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Тест плагина';
+    checkStatus();
+  })
+  .catch(function(){
+    result.innerHTML = '<span style="color:#ef4444;font-weight:700">&#10007; Не удалось связаться с плагином</span>';
+    result.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Тест плагина';
+  });
+}
+
+document.addEventListener('DOMContentLoaded', checkStatus);
+</script>
+
+</div>
+</body>
+</html>

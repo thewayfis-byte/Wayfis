@@ -1,0 +1,113 @@
+<%- include('layout', { active: 'overview', title: 'Обзор' }) %>
+
+<div class="page-header">
+  <div>
+    <h1 style="margin-bottom:8px">Wayfis</h1>
+    <div style="display:flex;gap:10px">
+      <a href="/" target="_blank" class="btn btn-outline">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+        Открыть витрину
+      </a>
+    </div>
+  </div>
+</div>
+
+<div style="display:flex;gap:16px;margin-bottom:24px;align-items:center">
+  <div class="tabs">
+    <a href="/admin?period=today" class="<%= period === 'today' ? 'active' : '' %>">Сегодня</a>
+    <a href="/admin?period=week" class="<%= period === 'week' ? 'active' : '' %>">Неделя</a>
+    <a href="/admin?period=month" class="<%= period === 'month' ? 'active' : '' %>">Месяц</a>
+    <a href="/admin?period=all" class="<%= period === 'all' ? 'active' : '' %>">Всё время</a>
+  </div>
+</div>
+
+<div class="stat-cards">
+  <div class="stat-card">
+    <div class="label">Покупки</div>
+    <div class="value"><%= stats ? stats.count : 0 %></div>
+    <div class="hint">
+      <% if (stats && stats.count > 0) { %>
+        на сумму <%= (stats.revenue || 0).toLocaleString('ru-RU') %> ₽
+      <% } else { %>
+        Покупок за период нет
+      <% } %>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Доход</div>
+    <div class="value"><%= (stats ? stats.revenue : 0).toLocaleString('ru-RU') %> ₽</div>
+    <div class="hint">
+      <% if (prevRevenue > 0 && stats) { %>
+        <% var diff = stats.revenue - prevRevenue; %>
+        <%= diff >= 0 ? '+' : '' %><%= diff.toLocaleString('ru-RU') %> ₽ к прошлому периоду
+      <% } else { %>
+        Данные появятся после продаж
+      <% } %>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Средний чек</div>
+    <div class="value"><%= (stats ? Math.round(stats.avg) : 0).toLocaleString('ru-RU') %> ₽</div>
+    <div class="hint">
+      <% if (stats && stats.count > 0) { %>
+        за <%= stats.count %> <%= stats.count === 1 ? 'заказ' : 'заказов' %>
+      <% } else { %>
+        Нет данных
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<a href="/admin/finance" class="card" style="display:flex;align-items:center;padding:16px 20px;text-decoration:none;margin-bottom:32px">
+  <div style="width:40px;height:40px;border-radius:10px;background:rgba(var(--accent-rgb),0.12);display:flex;align-items:center;justify-content:center;margin-right:14px;flex-shrink:0">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+  </div>
+  <div style="flex:1">
+    <div style="font-size:14px;font-weight:700;color:#fff">Подробная статистика</div>
+    <div style="font-size:12px;color:rgba(255,255,255,0.4)">Доход, средний чек, история платежей</div>
+  </div>
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+</a>
+
+<div class="card">
+  <div class="card-header">
+    <h3>Последние покупки</h3>
+    <a href="/admin/finance" class="btn btn-ghost btn-sm">Все платежи</a>
+  </div>
+  <div class="table-wrap"><table>
+    <thead>
+      <tr>
+        <th>Никнейм</th>
+        <th>Сумма</th>
+        <th>Способ</th>
+        <th>Дата</th>
+        <th>Статус</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (!recentOrders || recentOrders.length === 0) { %>
+        <tr>
+          <td colspan="5" class="empty">История операций появится после первого оплаченного заказа.</td>
+        </tr>
+      <% } else { %>
+        <% recentOrders.forEach(order => { %>
+          <tr>
+            <td><strong><%= order.nickname %></strong></td>
+            <td><%= order.amount.toLocaleString('ru-RU') %> ₽</td>
+            <td><%= order.payment_method || '—' %></td>
+            <td><%= new Date(order.created_at).toLocaleString('ru-RU') %></td>
+            <td>
+              <span class="badge <%= order.status === 'completed' ? 'badge-green' : order.status === 'pending' ? 'badge-yellow' : 'badge-gray' %>">
+                <%= order.status === 'completed' ? 'Оплачен' : order.status === 'pending' ? 'Ожидает' : 'Отменён' %>
+              </span>
+            </td>
+          </tr>
+        <% }) %>
+      <% } %>
+    </tbody>
+  </table></div>
+</div>
+
+</div>
+</body>
+</html>

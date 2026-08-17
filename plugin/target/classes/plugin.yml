@@ -1,0 +1,6 @@
+name: WayfisDelivery
+version: 1.0.0
+main: com.wayfis.delivery.DeliveryPlugin
+author: Wayfis
+description: Принимает команды от донат-магазина через HTTP и выполняет их на сервере
+softdepend: []

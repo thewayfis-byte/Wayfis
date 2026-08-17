@@ -1,0 +1,126 @@
+<%- include('layout', { active: 'payments', title: 'Оплата' }) %>
+
+<div class="page-header">
+  <h1>Оплата</h1>
+</div>
+
+<form method="POST" style="max-width:800px">
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-header">
+      <h3>YooKassa</h3>
+      <div class="form-group" style="margin:0;display:flex;align-items:center;gap:8px">
+        <input type="hidden" name="payment_yookassa_enabled" value="0">
+        <input type="checkbox" name="payment_yookassa_enabled" id="yookassa_enabled" value="1" <%= settings.payment_yookassa_enabled === '1' ? 'checked' : '' %>>
+        <label for="yookassa_enabled" style="margin:0;cursor:pointer;font-size:13px;color:rgba(255,255,255,0.6)">Включено</label>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Shop ID</label>
+          <input type="text" name="payment_yookassa_shop_id" value="<%= settings.payment_yookassa_shop_id || '' %>" placeholder="Введите Shop ID">
+        </div>
+        <div class="form-group">
+          <label>Secret Key</label>
+          <input type="password" name="payment_yookassa_secret" value="<%= settings.payment_yookassa_secret || '' %>" placeholder="Введите Secret Key">
+        </div>
+      </div>
+      <div style="margin-top:12px;padding:12px 14px;border-radius:10px;background:rgba(var(--accent-rgb),0.08);border:1px solid rgba(var(--accent-rgb),0.15);font-size:13px;color:rgba(255,255,255,0.7);line-height:1.5">
+        Webhook URL: <code style="color:var(--accent);font-weight:600"><%= baseUrl %>/pay/webhook/yookassa</code>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-header">
+      <h3>Platega</h3>
+      <div class="form-group" style="margin:0;display:flex;align-items:center;gap:8px">
+        <input type="hidden" name="payment_platega_enabled" value="0">
+        <input type="checkbox" name="payment_platega_enabled" id="platega_enabled" value="1" <%= settings.payment_platega_enabled === '1' ? 'checked' : '' %>>
+        <label for="platega_enabled" style="margin:0;cursor:pointer;font-size:13px;color:rgba(255,255,255,0.6)">Включено</label>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>API URL</label>
+          <input type="text" name="payment_platega_api_url" value="<%= settings.payment_platega_api_url || 'https://api.platega.io/v1' %>" placeholder="https://api.platega.io/v1">
+        </div>
+        <div class="form-group">
+          <label>Shop ID</label>
+          <input type="text" name="payment_platega_shop_id" value="<%= settings.payment_platega_shop_id || '' %>" placeholder="Введите Shop ID">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>API Key</label>
+        <input type="password" name="payment_platega_secret" value="<%= settings.payment_platega_secret || '' %>" placeholder="Введите API Key">
+      </div>
+      <div style="margin-top:12px;padding:12px 14px;border-radius:10px;background:rgba(234,179,8,0.1);border:1px solid rgba(234,179,8,0.2);font-size:13px;color:rgba(255,255,255,0.7);line-height:1.5">
+        Webhook URL: <code style="color:#eab308;font-weight:600"><%= baseUrl %>/pay/webhook/platega</code>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-header">
+      <h3>UnitPay</h3>
+      <div class="form-group" style="margin:0;display:flex;align-items:center;gap:8px">
+        <input type="hidden" name="payment_unitpay_enabled" value="0">
+        <input type="checkbox" name="payment_unitpay_enabled" id="unitpay_enabled" value="1" <%= settings.payment_unitpay_enabled === '1' ? 'checked' : '' %>>
+        <label for="unitpay_enabled" style="margin:0;cursor:pointer;font-size:13px;color:rgba(255,255,255,0.6)">Включено</label>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="form-group">
+        <label>Public Key (PUB)</label>
+        <input type="text" name="payment_unitpay_public_key" value="<%= settings.payment_unitpay_public_key || '' %>" placeholder="Введите публичный ключ">
+      </div>
+      <div class="form-group">
+        <label>Secret Key (API)</label>
+        <input type="password" name="payment_unitpay_secret_key" value="<%= settings.payment_unitpay_secret_key || '' %>" placeholder="Введите секретный ключ">
+      </div>
+      <div style="margin-top:12px;padding:12px 14px;border-radius:10px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);font-size:13px;color:rgba(255,255,255,0.7);line-height:1.5">
+        Webhook URL: <code style="color:#818cf8;font-weight:600"><%= baseUrl %>/pay/webhook/unitpay</code>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-header">
+      <h3>Free-Kassa</h3>
+      <div class="form-group" style="margin:0;display:flex;align-items:center;gap:8px">
+        <input type="hidden" name="payment_freekassa_enabled" value="0">
+        <input type="checkbox" name="payment_freekassa_enabled" id="freekassa_enabled" value="1" <%= settings.payment_freekassa_enabled === '1' ? 'checked' : '' %>>
+        <label for="freekassa_enabled" style="margin:0;cursor:pointer;font-size:13px;color:rgba(255,255,255,0.6)">Включено</label>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>ID магазина (MERCHANT_ID)</label>
+          <input type="text" name="payment_freekassa_shop_id" value="<%= settings.payment_freekassa_shop_id || '' %>" placeholder="Введите ID магазина">
+        </div>
+        <div class="form-group">
+          <label>Секретное слово #1</label>
+          <input type="password" name="payment_freekassa_secret1" value="<%= settings.payment_freekassa_secret1 || '' %>" placeholder="Секретное слово #1">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Секретное слово #2</label>
+        <input type="password" name="payment_freekassa_secret2" value="<%= settings.payment_freekassa_secret2 || '' %>" placeholder="Секретное слово #2">
+      </div>
+      <div style="margin-top:12px;padding:12px 14px;border-radius:10px;background:rgba(236,72,153,0.1);border:1px solid rgba(236,72,153,0.2);font-size:13px;color:rgba(255,255,255,0.7);line-height:1.5">
+        Webhook URL: <code style="color:#f472b6;font-weight:600"><%= baseUrl %>/pay/webhook/freekassa</code>
+      </div>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary" style="margin-bottom:32px">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+    Сохранить
+  </button>
+</form>
+
+</div>
+</body>
+</html>
