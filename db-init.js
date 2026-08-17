@@ -12,8 +12,9 @@ async function init() {
     multipleStatements: true
   });
 
-  await conn.query('CREATE DATABASE IF NOT EXISTS `hipexmc_shop` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci');
-  await conn.query('USE `hipexmc_shop`');
+  const dbName = process.env.DB_NAME || 'hipexmc_shop';
+  await conn.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`);
+  await conn.query(`USE \`${dbName}\``);
 
   // Create tables
   await conn.query(`CREATE TABLE IF NOT EXISTS categories (
